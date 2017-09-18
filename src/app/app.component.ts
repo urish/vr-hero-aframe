@@ -13,7 +13,7 @@ import 'rxjs/add/operator/switchMap';
 export class AppComponent implements OnInit {
   clicks = new Subject();
 
-  lines = ['red', 'green', 'yellow', 'orange', 'purple', 'blue'];
+  lines = ['red', 'pink', 'orange', 'green', 'blue', 'purple'];
   spheres = [];
 
   ngOnInit() {
