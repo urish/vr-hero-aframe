@@ -1,3 +1,4 @@
+import { DatastoreService } from './datastore.service';
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -16,9 +17,12 @@ export class AppComponent implements OnInit {
   lines = ['red', 'pink', 'orange', 'green', 'blue', 'purple'];
   spheres = [];
 
+  constructor(private datastore: DatastoreService) {
+  }
+
   ngOnInit() {
     const timer = Observable.interval(500).switchMap(
-        i => Observable.interval(Math.random() * 600 + 100)
+      i => Observable.interval(Math.random() * 600 + 100)
     );
     const events = Observable.merge(timer, this.clicks);
     events.subscribe(click => {
