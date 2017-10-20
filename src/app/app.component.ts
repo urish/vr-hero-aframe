@@ -6,6 +6,8 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/switchMap';
 
+import './sphere-shader';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

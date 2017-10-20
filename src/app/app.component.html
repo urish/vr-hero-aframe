@@ -9,7 +9,7 @@
   <a-box *ngFor="let line of lines; let i = index" depth="20" height="0.1" width="0.2" [attr.color]="line" [attr.position]="getPosition(i)"></a-box>
 
   <a-entity *ngFor="let sphere of spheres" position="0 0 -20">
-    <a-sphere [attr.position]="sphere.position" [attr.color]="sphere.color" radius="0.5">
+    <a-sphere [attr.position]="sphere.position" [attr.color]="sphere.color" radius="0.5" [attr.sphere-shader]="'color: ' + sphere.color">
     </a-sphere>
     <a-animation attribute="position" dur="2500" to="0 0 0"
       easing="linear"></a-animation>
