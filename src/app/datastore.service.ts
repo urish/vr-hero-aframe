@@ -20,8 +20,9 @@ const config = {
 
 export interface INoteEvent {
   stringId: number;
+  fret: number;
   note: number;
-  match: boolean;
+  match?: boolean;
 }
 
 @Injectable()

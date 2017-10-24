@@ -23,14 +23,16 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    const events = Observable.merge(this.datastore.notes$, this.clicks);
+    const events = Observable.merge(this.datastore.notes$,
+      this.clicks.map(() => ({ stringId: 4, fret: 2 })));
     events.subscribe((noteEvent: INoteEvent) => {
-      const line = noteEvent.stringId - 1;
-      const color = this.lines[line];
+      const line = noteEvent.stringId;
+      const color = this.lines[noteEvent.stringId];
       this.spheres.push({
         color: color,
+        fret: noteEvent.fret,
         position: `${line - 2} 0.5 0`,
-        stringId: noteEvent.stringId,
+        stringId: line,
         note: noteEvent.note
       });
     });

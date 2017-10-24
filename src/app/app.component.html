@@ -10,6 +10,7 @@
 
   <a-entity *ngFor="let sphere of spheres" position="0 0 -20">
     <a-sphere [attr.position]="sphere.position" [attr.color]="sphere.color" radius="0.5" [attr.sphere-shader]="'color: ' + sphere.color">
+      <a-entity [attr.text-geometry]="'value: ' + sphere.fret" position="0 0.5 0" material="emissive: white"></a-entity>
     </a-sphere>
     <a-animation attribute="position" dur="2500" to="0 0 0"
       easing="linear"></a-animation>
