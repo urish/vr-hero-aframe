@@ -8,6 +8,16 @@ import 'rxjs/add/operator/switchMap';
 
 import './sphere-shader';
 
+interface ISphere {
+  color: string;
+  fret: number;
+  position: string;
+  stringId: number;
+  note: number;
+  match?: boolean;
+  mismatch?: boolean;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,7 +27,7 @@ export class AppComponent implements OnInit {
   clicks = new Subject();
 
   lines = ['red', 'pink', 'orange', 'green', 'blue', 'purple'];
-  spheres = [];
+  spheres: ISphere[] = [];
 
   constructor(private datastore: DatastoreService) {
   }
@@ -42,7 +52,15 @@ export class AppComponent implements OnInit {
     return `${index - 2} 0 -10`;
   }
 
-  removeSphere(sphere: any) {
+  updateAnimation(sphere: ISphere) {
+    if (Math.random() < 0.5) {
+      sphere.mismatch = true;
+    } else {
+      sphere.match = true;
+    }
+  }
+
+  removeSphere(sphere: ISphere) {
     this.spheres = this.spheres.filter(s => s !== sphere);
   }
 }

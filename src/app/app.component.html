@@ -9,14 +9,17 @@
   <a-box *ngFor="let line of lines; let i = index" depth="20" height="0.1" width="0.2" [attr.color]="line" [attr.position]="getPosition(i)"></a-box>
 
   <a-entity *ngFor="let sphere of spheres" position="0 0 -20">
-    <a-sphere [attr.position]="sphere.position" [attr.color]="sphere.color" radius="0.5" [attr.sphere-shader]="'color: ' + sphere.color">
-      <a-entity [attr.text-geometry]="'value: ' + sphere.fret" position="0 0.5 0" material="emissive: white"></a-entity>
+    <a-sphere [attr.position]="sphere.position" radius="0.5" [attr.sphere-shader]="'color: ' + sphere.color"
+      [attr.glow]="'color: #00ff00; scale: 1.5; p: 0.8; c: 0.5; enabled: ' + (sphere.match ? 'true' : 'false')">
+      <a-entity [attr.text-geometry]="'value: ' + sphere.fret" position="0 0.5 0" material="emissive: white">
+      </a-entity>
+      <a-animation attribute="sphere-shader.opacity" dur="500" to="0" *ngIf="sphere.mismatch"
+        (animationend)="removeSphere(sphere)"></a-animation>
     </a-sphere>
     <a-animation attribute="position" dur="2500" to="0 0 0"
-      easing="linear"></a-animation>
-    <a-animation attribute="position" dur="3000"
-      from="0 0 0" to="0 999 0"
-      begin="2500" (animationend)="removeSphere(sphere)"></a-animation>
+      easing="linear" (animationend)="updateAnimation(sphere)"></a-animation>
+    <a-animation attribute="position" begin="500" dur="500" *ngIf="sphere.match"
+      from="0 0 0" to="0 999 0" (animationend)="removeSphere(sphere)"></a-animation>
   </a-entity>
 
   <a-camera id="cam" position="1.5 0 4" rotation="0 0 0">

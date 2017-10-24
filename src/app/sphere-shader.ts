@@ -19,7 +19,6 @@ attribute vec3 normal;
 attribute vec2 uv;
 attribute vec2 uv2;
 
-uniform float speed;
 uniform float time;
 uniform float scale;
 
@@ -56,6 +55,7 @@ precision highp int;
 uniform float time;
 uniform mat4 viewMatrix;
 uniform float brightness;
+uniform float opacity;
 
 varying vec3 vTexCoord3D;
 varying vec3 vNormal;
@@ -195,12 +195,15 @@ void main( void ) {
 	float directionalLightWeighting = dot( normal, normalize( lDirection.xyz ) ) * 0.25 + 0.75;
 	vLightWeighting += vec3( brightness ) * directionalLightWeighting;
 
-	gl_FragColor = vec4( baseColor * vLightWeighting, 1.0 );
+	gl_FragColor = vec4( baseColor * vLightWeighting, opacity );
 }
 `;
 
 AFRAME.registerComponent('sphere-shader', {
-  schema: { color: { type: 'color' } },
+  schema: {
+    color: { type: 'color' },
+    opacity: { type: 'float', default: 1 },
+  },
 
   init: function () {
     this.material = new THREE.ShaderMaterial({
@@ -208,14 +211,15 @@ AFRAME.registerComponent('sphere-shader', {
         time: { value: 0.0 },
         color: { value: new THREE.Color(this.data.color) },
         brightness: { value: 1.1 },
+        opacity: { value: this.data.opacity },
         scale: { value: 1 },
-        speed: { value: 1 },
       },
       vertexShader: vertexShader
         .replace(/uniform (mat4|mat3|vec3) (modelMatrix|modelViewMatrix|projectionMatrix|viewMatrix|normalMatrix|cameraPosition);/g, '')
         .replace(/attribute (vec[32]) (position|normal|uv);/g, ''),
       fragmentShader: fragmentShader
         .replace(/uniform (mat4|vec3) (viewMatrix|cameraPosition);/g, ''),
+      transparent: this.data.opacity < 1,
     });
 
     this.applyToMesh();
@@ -224,6 +228,8 @@ AFRAME.registerComponent('sphere-shader', {
 
   update: function () {
     this.material.uniforms.color.value.set(this.data.color);
+    this.material.uniforms.opacity.value = this.data.opacity;
+    this.material.transparent = this.data.opacity < 1;
   },
 
   applyToMesh: function () {
