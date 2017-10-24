@@ -1,4 +1,4 @@
-import { DatastoreService } from './datastore.service';
+import { DatastoreService, INoteEvent } from './datastore.service';
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -23,14 +23,16 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    const timer = Observable.interval(500).switchMap(
-      i => Observable.interval(Math.random() * 600 + 100)
-    );
-    const events = Observable.merge(timer, this.clicks);
-    events.subscribe(click => {
-      const line = Math.floor(Math.random() * 6);
+    const events = Observable.merge(this.datastore.notes$, this.clicks);
+    events.subscribe((noteEvent: INoteEvent) => {
+      const line = noteEvent.stringId - 1;
       const color = this.lines[line];
-      this.spheres.push({ color: color, position: `${line - 2} 0.5 0` });
+      this.spheres.push({
+        color: color,
+        position: `${line - 2} 0.5 0`,
+        stringId: noteEvent.stringId,
+        note: noteEvent.note
+      });
     });
   }
 

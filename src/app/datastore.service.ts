@@ -1,10 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Subscriber';
 import { Subject } from 'rxjs/Subject';
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/auth';
+
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/publish';
 
 const config = {
   apiKey: 'AIzaSyAeef6ppzfZI3kLGiUkXPrE2sBGeyochnY',
@@ -14,15 +18,36 @@ const config = {
   messagingSenderId: '729035450276'
 };
 
+export interface INoteEvent {
+  stringId: number;
+  note: number;
+  match: boolean;
+}
+
 @Injectable()
 export class DatastoreService {
   private db: firebase.firestore.Firestore;
+  private songRef: firebase.database.Reference;
   private users: firebase.firestore.CollectionReference;
   private users$ = new Subject<any>();
   private user: firebase.firestore.DocumentReference;
 
-  constructor() {
+  notes$: Observable<INoteEvent>;
+
+  constructor(zone: NgZone) {
     firebase.initializeApp(config);
+
+    // Realtime
+    this.songRef = firebase.database().ref('/song');
+    this.notes$ = new Observable<INoteEvent>((observer: Subscriber<INoteEvent>) => {
+      const listener = this.songRef.on('child_added', snap => {
+        zone.run(() => {
+          observer.next(snap.val() as INoteEvent);
+        });
+      }, (err: Error) => observer.error(err));
+
+      return () => this.songRef.off('child_added', listener);
+    }).publish().refCount();
 
     // DB
     this.db = firebase.firestore();
