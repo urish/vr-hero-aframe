@@ -5,7 +5,6 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 import 'aframe-text-geometry-component';
-import 'aframe-environment-component';
 import 'aframe-fireball-component';
 import 'aframe-glow';
 

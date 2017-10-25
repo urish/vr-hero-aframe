@@ -233,10 +233,6 @@ adm-zip@^0.4.7:
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.4.7.tgz#8606c2cbf1c426ce8c8ec00174447fd49b6eafc1"
 
-aframe-environment-component@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/aframe-environment-component/-/aframe-environment-component-1.0.0.tgz#dde6a8734dc7777d9c4a00b5bab25f877e8b3b37"
-
 aframe-fireball-component@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/aframe-fireball-component/-/aframe-fireball-component-1.0.0.tgz#3bf6dd1a2fc64a2ee82e473d7fd22e42158716d1"
