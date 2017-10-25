@@ -34,7 +34,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const events = Observable.merge(this.datastore.notes$,
-      this.clicks.map(() => ({ stringId: 4, fret: 2 })));
+      this.clicks.map(() => ({
+        stringId: Math.floor(Math.random() * 6),
+        fret: Math.floor(Math.random() * 6)
+      })));
     events.subscribe((noteEvent: INoteEvent) => {
       const line = noteEvent.stringId;
       const color = this.lines[noteEvent.stringId];
