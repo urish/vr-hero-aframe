@@ -24,6 +24,7 @@
     "@angular/router": "^4.2.4",
     "aframe": "^0.7.1",
     "aframe-environment-component": "^1.0.0",
+    "aframe-fireball-component": "^1.0.0",
     "aframe-glow": "^1.0.1",
     "aframe-text-geometry-component": "^0.5.1",
     "core-js": "^2.4.1",

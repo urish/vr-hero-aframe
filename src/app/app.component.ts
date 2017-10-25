@@ -6,8 +6,6 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/switchMap';
 
-import './sphere-shader';
-
 interface ISphere {
   color: string;
   fret: number;
