@@ -9,10 +9,10 @@
   <a-box *ngFor="let line of lines; let i = index" depth="20" height="0.1" width="0.2" [attr.color]="line" [attr.position]="getPosition(i)"></a-box>
 
   <a-entity *ngFor="let sphere of spheres" position="0 0 -20">
-    <a-sphere [attr.position]="sphere.position" radius="0.5" [attr.fireball]="'brightness: 1.5; color: ' + sphere.color"
-      [attr.glow]="'color: #00ff00; scale: 1.5; p: 0.8; c: 0.5; enabled: ' + (sphere.match ? 'true' : 'false')">
+    <a-sphere [attr.position]="sphere.position" radius="0.5" [attr.fireball]="'brightness: 1.5; color: ' + sphere.color">
       <a-entity [attr.text-geometry]="'value: ' + sphere.fret" position="0 0.5 0" material="emissive: white">
       </a-entity>
+      <a-sphere radius="0.65" opacity="0.5" [attr.material]="'color: #5eff5e; emissive: green; emissiveIntensity: 0.2; metalness: 1; roughness: 0.61; visible: ' + (sphere.match ? 'true' : 'false')"></a-sphere>
       <a-animation attribute="fireball.opacity" dur="500" to="0" *ngIf="sphere.mismatch"
         (animationend)="removeSphere(sphere)"></a-animation>
     </a-sphere>

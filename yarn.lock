@@ -237,10 +237,6 @@ aframe-fireball-component@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/aframe-fireball-component/-/aframe-fireball-component-1.1.0.tgz#2b01deba5169870fa02010bd593f6800a7cbf9d1"
 
-aframe-glow@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/aframe-glow/-/aframe-glow-1.0.1.tgz#3ea1ca5972f864b73f9d28a92cddc26493a45b1a"
-
 aframe-text-geometry-component@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/aframe-text-geometry-component/-/aframe-text-geometry-component-0.5.1.tgz#c5024e182aa96f548cd7fea6e53dd47b7f6f753a"
