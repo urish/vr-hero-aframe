@@ -22,7 +22,7 @@ uniform float     time;
 #define iterations 17
 #define formuparam 0.53
 
-#define volsteps 20
+#define volsteps 4
 #define stepsize 0.1
 
 #define zoom   0.800
