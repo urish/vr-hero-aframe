@@ -9,13 +9,14 @@ import 'rxjs/add/operator/switchMap';
 import './star-nest.shader';
 
 interface ISphere {
+  id: number;
   color: string;
   fret: number;
   position: string;
   stringId: number;
   note: number;
   match?: boolean;
-  mismatch?: boolean;
+  endOfTrack?: boolean;
 }
 
 @Component({
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
 
   lines = ['red', 'pink', 'orange', 'green', 'blue', 'purple'];
   spheres: ISphere[] = [];
+  autoId = 0x8000000;
 
   constructor(private datastore: DatastoreService) {
   }
@@ -35,19 +37,27 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     const events = Observable.merge(this.datastore.notes$,
       this.clicks.map(() => ({
+        id: this.autoId++,
         stringId: Math.floor(Math.random() * 6),
         fret: Math.floor(Math.random() * 6)
       })));
     events.subscribe((noteEvent: INoteEvent) => {
       const line = noteEvent.stringId;
       const color = this.lines[noteEvent.stringId];
-      this.spheres.push({
-        color: color,
-        fret: noteEvent.fret,
-        position: `${line - 2} 0.5 0`,
-        stringId: line,
-        note: noteEvent.note
-      });
+      const sphere = this.spheres.find(s => s.id === noteEvent.id);
+      if (sphere) {
+        sphere.match = noteEvent.match;
+      } else {
+        this.spheres.push({
+          id: noteEvent.id,
+          color: color,
+          fret: noteEvent.fret,
+          position: `${line - 2} 0.5 0`,
+          stringId: line,
+          note: noteEvent.note,
+          match: noteEvent.match || false,
+        });
+      }
     });
   }
 
@@ -56,11 +66,7 @@ export class AppComponent implements OnInit {
   }
 
   updateAnimation(sphere: ISphere) {
-    if (Math.random() < 0.5) {
-      sphere.mismatch = true;
-    } else {
-      sphere.match = true;
-    }
+    sphere.endOfTrack = true;
   }
 
   removeSphere(sphere: ISphere) {

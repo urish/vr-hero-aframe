@@ -19,6 +19,7 @@ const config = {
 };
 
 export interface INoteEvent {
+  id: number;
   stringId: number;
   fret: number;
   note: number;
