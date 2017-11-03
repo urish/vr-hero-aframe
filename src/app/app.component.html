@@ -6,7 +6,7 @@
 
   <a-box *ngFor="let line of lines; let i = index" depth="20" height="0.1" width="0.2" [attr.color]="line" [attr.position]="getPosition(i)"></a-box>
 
-  <a-entity *ngFor="let sphere of spheres" position="0 0 -20">
+  <a-entity *ngFor="let sphere of spheres" position="0 0 -23">
     <a-sphere [attr.position]="sphere.position" radius="0.5" [attr.fireball]="'brightness: 1.5; color: ' + sphere.color">
       <a-entity [attr.text-geometry]="'value: ' + sphere.fret" position="0 0.5 0" material="emissive: white">
       </a-entity>
@@ -14,18 +14,9 @@
       <a-animation attribute="fireball.opacity" dur="500" to="0" *ngIf="sphere.endOfTrack && !sphere.match"
         (animationend)="removeSphere(sphere)"></a-animation>
     </a-sphere>
-    <a-animation attribute="position" dur="2500" to="0 0 0"
+    <a-animation attribute="position" dur="2500" to="0 0 -3"
       easing="linear" (animationend)="updateAnimation(sphere)"></a-animation>
     <a-animation attribute="position" begin="500" dur="1000" *ngIf="sphere.endOfTrack && sphere.match"
-      from="0 0 0" to="0 999 0" (animationend)="removeSphere(sphere)"></a-animation>
+      from="0 0 -3" to="0 999 -3" (animationend)="removeSphere(sphere)"></a-animation>
   </a-entity>
-
-  <a-camera id="cam" position="1.5 0 4" rotation="0 0 0">
-    <a-entity id="spec_1" light="type:directional; color:#ffc; intensity:0.3; target:#spec_1_target" position="2 2 0">
-      <a-entity id="spec_1_target" position="-2 -2 0"></a-entity>
-    </a-entity>
-    <a-entity id="spec_2" light="type:directional; color:#cff; intensity:0.3; target:#spec_2_target" position="-2 2 0">
-      <a-entity id="spec_2_target" position="2 -2 0"></a-entity>
-    </a-entity>
-  </a-camera>
 </a-scene>

@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
           id: noteEvent.id,
           color: color,
           fret: noteEvent.fret,
-          position: `${line - 2} 0.5 0`,
+          position: `${line - 3} 0.5 0`,
           stringId: line,
           note: noteEvent.note,
           match: noteEvent.match || false,
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
   }
 
   getPosition(index: number) {
-    return `${index - 2} 0 -10`;
+    return `${index - 3} 0 -13`;
   }
 
   updateAnimation(sphere: ISphere) {
