@@ -1,10 +1,8 @@
 <button (click)="clicks.next()">Drop</button>
 <a-scene>
   <a-sky starnest></a-sky>
+
   <a-entity light="type:ambient; color:#bbb"></a-entity>
-  <a-entity id="shadow_light" light="type:directional; color:#333; intensity:1; castShadow:true; target:#shadow_target" position="1.5 4 4">
-    <a-entity id="shadow_target" position="0 -4 0"></a-entity>
-  </a-entity>
 
   <a-box *ngFor="let line of lines; let i = index" depth="20" height="0.1" width="0.2" [attr.color]="line" [attr.position]="getPosition(i)"></a-box>
 
