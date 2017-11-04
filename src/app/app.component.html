@@ -1,4 +1,11 @@
 <a-scene (click)="clicks.next()">
+  <a-entity id="spec_1" light="type:directional; color:#ffc; intensity:0.3; target:#spec_1_target" position="2 2 0">
+    <a-entity id="spec_1_target" position="-2 -2 0"></a-entity>
+  </a-entity>
+  <a-entity id="spec_2" light="type:directional; color:#cff; intensity:0.3; target:#spec_2_target" position="-2 2 0">
+    <a-entity id="spec_2_target" position="2 -2 0"></a-entity>
+  </a-entity>
+
   <a-sky starnest></a-sky>
 
   <a-entity light="type:ambient; color:#bbb"></a-entity>
@@ -9,15 +16,12 @@
     <a-sphere [attr.position]="sphere.position" radius="0.5" [attr.fireball]="{brightness: 1.5, color: sphere.color}|aframe">
       <a-entity [attr.text-geometry]="{value: sphere.fret}|aframe" position="0 0.5 0" material="emissive: white">
       </a-entity>
-      <a-sphere radius="0.65" opacity="0.5"
-        [attr.material]="{color: '#5eff5e', emissive: 'green', emissiveIntensity: 0.2, metalness: 1, roughness: 0.61, visible: sphere.match}|aframe"></a-sphere>
-      <a-animation attribute="fireball.opacity" dur="500" to="0" *ngIf="sphere.endOfTrack && !sphere.match"
-        (animationend)="removeSphere(sphere)"></a-animation>
+      <a-sphere radius="0.65" opacity="0.5" [attr.material]="{color: '#5eff5e', emissive: 'green', emissiveIntensity: 0.2, metalness: 1, roughness: 0.61, visible: sphere.match}|aframe"></a-sphere>
+      <a-animation attribute="fireball.opacity" dur="500" to="0" *ngIf="sphere.endOfTrack && !sphere.match" (animationend)="removeSphere(sphere)"></a-animation>
     </a-sphere>
-    <a-animation attribute="position" dur="2500" to="0 0 -3"
-      easing="linear" (animationend)="updateAnimation(sphere)"></a-animation>
-    <a-animation attribute="position" delay="500" dur="1000" *ngIf="sphere.endOfTrack && sphere.match"
-      from="0 0 -3" to="0 999 -3" (animationend)="removeSphere(sphere)"></a-animation>
+    <a-animation attribute="position" dur="2500" to="0 0 -3" easing="linear" (animationend)="updateAnimation(sphere)"></a-animation>
+    <a-animation attribute="position" delay="500" dur="1000" *ngIf="sphere.endOfTrack && sphere.match" from="0 0 -3" to="0 999 -3"
+      (animationend)="removeSphere(sphere)"></a-animation>
   </a-entity>
 
   <a-box *ngFor="let user of users; let i = index" depth="0.2" height="0.1" width="0.2" [attr.color]="user.color" [attr.position]="user.position"></a-box>
