@@ -1,14 +1,6 @@
 <a-scene (click)="clicks.next()">
-  <a-entity id="spec_1" light="type:directional; color:#ffc; intensity:0.3; target:#spec_1_target" position="2 2 0">
-    <a-entity id="spec_1_target" position="-2 -2 0"></a-entity>
-  </a-entity>
-  <a-entity id="spec_2" light="type:directional; color:#cff; intensity:0.3; target:#spec_2_target" position="-2 2 0">
-    <a-entity id="spec_2_target" position="2 -2 0"></a-entity>
-  </a-entity>
 
   <a-sky starnest></a-sky>
-
-  <a-entity light="type:ambient; color:#bbb"></a-entity>
 
   <a-box *ngFor="let line of lines; let i = index" depth="20" height="0.1" width="0.2" [attr.color]="line" [attr.position]="getPosition(i)"></a-box>
 
