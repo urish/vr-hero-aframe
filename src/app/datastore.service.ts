@@ -4,7 +4,6 @@ import { Subscriber } from 'rxjs/Subscriber';
 import { Subject } from 'rxjs/Subject';
 
 import * as firebase from 'firebase';
-import 'firebase/firestore';
 import 'firebase/auth';
 
 import 'rxjs/add/operator/map';
@@ -28,46 +27,46 @@ export interface INoteEvent {
 
 @Injectable()
 export class DatastoreService {
-  private db: firebase.firestore.Firestore;
   private songRef: firebase.database.Reference;
-  private users: firebase.firestore.CollectionReference;
+  private users: firebase.database.Reference;
   private users$ = new Subject<any>();
-  private user: firebase.firestore.DocumentReference;
+  private user: firebase.database.Reference;
 
   notes$: Observable<INoteEvent>;
 
-  constructor(zone: NgZone) {
+  constructor(private zone: NgZone) {
     firebase.initializeApp(config);
 
-    // Realtime
+    // Notes
     this.songRef = firebase.database().ref('/song');
-    this.notes$ = new Observable<INoteEvent>((observer: Subscriber<INoteEvent>) => {
-      const listener = this.songRef.on('child_added', snap => {
-        zone.run(() => {
-          observer.next(snap.val() as INoteEvent);
-        });
-      }, (err: Error) => observer.error(err));
+    this.notes$ = this.observe<INoteEvent>(this.songRef, 'child_added');
 
-      return () => this.songRef.off('child_added', listener);
-    }).publish().refCount();
-
-    // DB
-    this.db = firebase.firestore();
-    const usersSnapshots = new Subject<firebase.firestore.QuerySnapshot>();
-    this.users = this.db.collection('users');
-    this.users.onSnapshot(usersSnapshots);
-    usersSnapshots.map(snap => snap.docs.map(docSnap => docSnap.data()))
+    // Users
+    this.users = firebase.database().ref('/users');
+    this.observe(this.users, 'value')
       .subscribe(this.users$);
 
     // Auth
     firebase.auth().signInAnonymously();
     firebase.auth().onAuthStateChanged(user => {
-      this.user = this.users.doc(firebase.auth().currentUser.uid);
+      this.user = this.users.child(firebase.auth().currentUser.uid);
       this.user.set({
-        lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+        lastSeen: firebase.database.ServerValue.TIMESTAMP,
         color: 'red',
-      }, { merge: true });
+      });
+      this.user.onDisconnect().remove();
     });
   }
 
+  private observe<T>(query: firebase.database.Query, eventType = 'value') {
+    return new Observable<T>((observer: Subscriber<T>) => {
+      const listener = query.on(eventType, snap => {
+        this.zone.run(() => {
+          observer.next(snap.val() as T);
+        });
+      }, (err: Error) => observer.error(err));
+
+      return () => query.off(eventType, listener);
+    }).publish().refCount();
+  }
 }
