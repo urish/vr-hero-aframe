@@ -1,7 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
-import { Subject } from 'rxjs/Subject';
 
 import * as firebase from 'firebase';
 import 'firebase/auth';
@@ -25,13 +24,19 @@ export interface INoteEvent {
   match?: boolean;
 }
 
+export interface IUser {
+  id: string;
+  color: string;
+  position: number;
+}
+
 @Injectable()
 export class DatastoreService {
   private songRef: firebase.database.Reference;
   private users: firebase.database.Reference;
-  private users$ = new Subject<any>();
   private user: firebase.database.Reference;
 
+  users$: Observable<IUser[]>;
   notes$: Observable<INoteEvent>;
 
   constructor(private zone: NgZone) {
@@ -43,14 +48,16 @@ export class DatastoreService {
 
     // Users
     this.users = firebase.database().ref('/users');
-    this.observe(this.users, 'value')
-      .subscribe(this.users$);
+    this.users$ = this.observe(this.users, 'value')
+      .map(users => Object.keys(users).map(key => users[key]));
 
     // Auth
     firebase.auth().signInAnonymously();
     firebase.auth().onAuthStateChanged(user => {
-      this.user = this.users.child(firebase.auth().currentUser.uid);
+      const userId = firebase.auth().currentUser.uid;
+      this.user = this.users.child(userId);
       this.user.set({
+        id: userId,
         lastSeen: firebase.database.ServerValue.TIMESTAMP,
         color: 'red',
       });

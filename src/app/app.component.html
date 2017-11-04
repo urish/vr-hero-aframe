@@ -19,4 +19,7 @@
     <a-animation attribute="position" delay="500" dur="1000" *ngIf="sphere.endOfTrack && sphere.match"
       from="0 0 -3" to="0 999 -3" (animationend)="removeSphere(sphere)"></a-animation>
   </a-entity>
+
+  <a-box *ngFor="let user of users; let i = index" depth="0.2" height="0.1" width="0.2" [attr.color]="user.color" [attr.position]="user.position"></a-box>
+
 </a-scene>

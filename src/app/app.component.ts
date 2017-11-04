@@ -1,4 +1,4 @@
-import { DatastoreService, INoteEvent } from './datastore.service';
+import { DatastoreService, INoteEvent, IUser } from './datastore.service';
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   clicks = new Subject();
 
   lines = ['red', 'pink', 'orange', 'green', 'blue', 'purple'];
+  users: IUser[] = [];
   spheres: ISphere[] = [];
   autoId = 0x8000000;
 
@@ -58,6 +59,10 @@ export class AppComponent implements OnInit {
           match: noteEvent.match || false,
         });
       }
+    });
+
+    this.datastore.users$.subscribe(users => {
+      this.users = users;
     });
   }
 
