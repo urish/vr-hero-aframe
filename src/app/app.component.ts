@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
       })));
     events.subscribe((noteEvent: INoteEvent) => {
       const line = noteEvent.stringId;
-      const color = this.lines[noteEvent.stringId];
+      const color = this.lines[line];
       const sphere = this.spheres.find(s => s.id === noteEvent.id);
       if (sphere) {
         sphere.match = noteEvent.match;
