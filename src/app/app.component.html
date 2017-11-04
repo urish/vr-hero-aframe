@@ -3,10 +3,10 @@
   <a-sky starnest></a-sky>
 
   <a-box *ngFor="let line of lines; let i = index" depth="20" height="0.1" width="0.2" [attr.color]="line"
-    [attr.position]="{x:i-3, y:0, z:-13}|aframe"></a-box>
+    [attr.position]="{x:i-3, y:2.5, z:-13}|aframe"></a-box>
 
   <a-entity *ngFor="let sphere of spheres" position="0 0 -23">
-    <a-sphere [attr.position]="{x:sphere.stringId-3, y:0.5, z:0}|aframe" radius="0.5" [attr.fireball]="{brightness: 1.5, color: sphere.color}|aframe">
+    <a-sphere [attr.position]="{x:sphere.stringId-3, y:3, z:0}|aframe" radius="0.5" [attr.fireball]="{brightness: 1.5, color: sphere.color}|aframe">
       <a-entity [attr.text-geometry]="{value: sphere.fret}|aframe" position="0 0.5 0" material="emissive: white">
       </a-entity>
       <a-sphere radius="0.65" opacity="0.5" [attr.material]="{color: '#5eff5e', emissive: 'green', emissiveIntensity: 0.2, metalness: 1, roughness: 0.61, visible: sphere.match}|aframe"></a-sphere>
