@@ -12,7 +12,6 @@ interface ISphere {
   id: number;
   color: string;
   fret: number;
-  position: string;
   stringId: number;
   note: number;
   match?: boolean;
@@ -53,7 +52,6 @@ export class AppComponent implements OnInit {
           id: noteEvent.id,
           color: color,
           fret: noteEvent.fret,
-          position: `${line - 3} 0.5 0`,
           stringId: line,
           note: noteEvent.note,
           match: noteEvent.match || false,
@@ -64,10 +62,6 @@ export class AppComponent implements OnInit {
     this.datastore.users$.subscribe(users => {
       this.users = users;
     });
-  }
-
-  getPosition(index: number) {
-    return `${index - 3} 0 -13`;
   }
 
   updateAnimation(sphere: ISphere) {
