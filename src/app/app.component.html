@@ -7,6 +7,8 @@
 
   <a-entity *ngFor="let sphere of spheres" position="0 0 -28">
     <a-sphere [attr.position]="{x:sphere.stringId-3, y:3, z:0}|aframe" radius="0.5" [attr.fireball]="{brightness: sphere.match?10:1.5, scale: sphere.match?10:1, color: sphere.color}|aframe">
+      <a-entity position="0 0 0" [attr.particle-system]="{color: [sphere.color,'#44CC00'], particleCount: 100, size: 0.5, maxAge: 1}|aframe" scale="0.2 0.2 0.2"
+        *ngIf="sphere.match"></a-entity>
       <a-entity [attr.text-geometry]="{value: sphere.fret}|aframe" position="0 0.5 0" material="emissive: white">
       </a-entity>
       <a-animation attribute="fireball.opacity" dur="500" to="0" *ngIf="sphere.endOfTrack && !sphere.match" (animationend)="removeSphere(sphere)"></a-animation>

@@ -6,6 +6,7 @@ import { environment } from './environments/environment';
 
 import 'aframe-text-geometry-component';
 import 'aframe-fireball-component';
+import 'aframe-particle-system-component';
 
 if (environment.production) {
   enableProdMode();
