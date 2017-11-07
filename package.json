@@ -26,6 +26,7 @@
     "aframe": "^0.7.1",
     "aframe-fireball-component": "^1.1.0",
     "aframe-particle-system-component": "^1.0.10",
+    "aframe-starnest-component": "^0.0.1",
     "aframe-text-geometry-component": "^0.5.1",
     "core-js": "^2.4.1",
     "firebase": "^4.5.0",
