@@ -1,4 +1,4 @@
-import { DatastoreService } from './datastore.service';
+import { FirebaseNotesService } from './firebase-notes.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -13,7 +13,7 @@ import { AframePipe } from './aframe.pipe';
   imports: [
     BrowserModule
   ],
-  providers: [DatastoreService],
+  providers: [FirebaseNotesService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

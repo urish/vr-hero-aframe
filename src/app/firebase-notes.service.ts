@@ -3,10 +3,11 @@ import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
 
 import * as firebase from 'firebase';
-import 'firebase/auth';
 
+import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/publish';
+import 'rxjs/add/operator/switchMap';
 
 const config = {
   apiKey: 'AIzaSyAeef6ppzfZI3kLGiUkXPrE2sBGeyochnY',
@@ -24,45 +25,26 @@ export interface INoteEvent {
   match?: boolean;
 }
 
-export interface IUser {
-  id: string;
-  color: string;
-  position: number;
-}
-
 @Injectable()
-export class DatastoreService {
-  private songRef: firebase.database.Reference;
-  private users: firebase.database.Reference;
-  private user: firebase.database.Reference;
-
-  users$: Observable<IUser[]>;
+export class FirebaseNotesService {
   notes$: Observable<INoteEvent>;
+
+  // Generate fake note events
+  fakeNoteId = 100000;
+  fakeNotes$: Observable<INoteEvent> = Observable.interval(500)
+    .switchMap(i => Observable.interval(Math.random() * 600 + 100))
+    .map((value) => ({
+      id: this.fakeNoteId++,
+      stringId: Math.floor(Math.random() * 6),
+      fret: Math.floor(Math.random() * 6),
+      note: 0,
+    }));
 
   constructor(private zone: NgZone) {
     firebase.initializeApp(config);
 
-    // Notes
-    this.songRef = firebase.database().ref('/song');
-    this.notes$ = this.observe<INoteEvent>(this.songRef, 'child_added');
-
-    // Users
-    this.users = firebase.database().ref('/users');
-    this.users$ = this.observe(this.users, 'value')
-      .map(users => Object.keys(users).map(key => users[key]));
-
-    // Auth
-    firebase.auth().signInAnonymously();
-    firebase.auth().onAuthStateChanged(user => {
-      const userId = firebase.auth().currentUser.uid;
-      this.user = this.users.child(userId);
-      this.user.set({
-        id: userId,
-        lastSeen: firebase.database.ServerValue.TIMESTAMP,
-        color: 'red',
-      });
-      this.user.onDisconnect().remove();
-    });
+    const songRef = firebase.database().ref('/song');
+    this.notes$ = this.observe<INoteEvent>(songRef, 'child_added');
   }
 
   private observe<T>(query: firebase.database.Query, eventType = 'value') {

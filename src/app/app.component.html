@@ -1,24 +1,7 @@
-<a-scene (click)="clicks.next()">
-
+<a-scene>
   <a-sky starnest></a-sky>
 
-  <a-entity rotation="45 0 0" position="0 0 -8">
-    <a-box *ngFor="let line of lines; let i = index" depth="20" height="0.1" width="0.2" [attr.color]="line" [attr.position]="{x:i-3, y:2.5, z:-10}|aframe"></a-box>
-
-    <a-entity *ngFor="let sphere of spheres" position="0 0 -20">
-      <a-sphere [attr.position]="{x:sphere.stringId-3, y:3, z:0}|aframe" radius="0.5" [attr.fireball]="{brightness: sphere.match?10:1.5, scale: sphere.match?10:1, color: sphere.color}|aframe">
-        <a-entity position="0 0 0" [attr.particle-system]="{color: [sphere.color,'#44CC00'], particleCount: 100, size: 0.5, maxAge: 1}|aframe"
-          scale="0.2 0.2 0.2" *ngIf="sphere.match"></a-entity>
-        <a-entity [attr.text-geometry]="{value: sphere.fret}|aframe" position="0 0.5 0" material="emissive: white">
-        </a-entity>
-        <a-animation attribute="fireball.opacity" dur="500" to="0" *ngIf="sphere.endOfTrack && !sphere.match" (animationend)="removeSphere(sphere)"></a-animation>
-      </a-sphere>
-      <a-animation attribute="position" dur="2500" to="0 0 0" easing="linear" (animationend)="updateAnimation(sphere)"></a-animation>
-      <a-animation attribute="position" delay="500" dur="1500" *ngIf="sphere.endOfTrack && sphere.match" from="0 0 -8" to="0 999 -8"
-        (animationend)="removeSphere(sphere)"></a-animation>
-    </a-entity>
-  </a-entity>
-
-  <a-box *ngFor="let user of users; let i = index" depth="0.2" height="0.1" width="0.2" [attr.color]="user.color" [attr.position]="user.position"></a-box>
-
+  <a-sphere position="0 1.5 -5" [attr.fireball]="{color:color}|aframe">
+  </a-sphere>
 </a-scene>
+
