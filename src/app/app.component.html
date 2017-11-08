@@ -1,7 +1,14 @@
 <a-scene>
   <a-sky starnest></a-sky>
 
-  <a-sphere position="0 1.5 -5" [attr.fireball]="{color:color}|aframe">
-  </a-sphere>
+  <a-entity rotation="45 0 0" position="0 0 -10">
+    <a-entity *ngFor="let ball of balls" animation="property: position; from: 0 0 0; to: 0 10 0; dur: 5000">
+      <a-sphere  [attr.position]="{x: ball.stringId * 2 - 6, y: 1.5, z: -ball.fret}|aframe" [attr.fireball]="{color: colors[ball.stringId]}|aframe"
+        animation__opacity="property: fireball.opacity; from: 1; to: 0; dur: 5000"
+        animation__scale="property: fireball.scale; from: 0.5; to: 1.5; dur: 1600; dir: alternate; loop:true"
+        animation__brightness="property: fireball.brightness; from: 1.5; to: 5.0; dur: 3200; dir: alternate; loop:true"
+        (animationcomplete)="removeBall(ball)">
+      </a-sphere>
+    </a-entity>
+  </a-entity>
 </a-scene>
-

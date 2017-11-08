@@ -9,16 +9,17 @@ import { FirebaseNotesService, INoteEvent } from './firebase-notes.service';
 export class AppComponent implements OnInit {
 
   colors = ['red', 'pink', 'orange', 'green', 'blue', 'purple'];
-  colorIndex = 0;
+
+  balls: INoteEvent[] = [];
 
   constructor(private notes: FirebaseNotesService) {
-    notes.fakeNotes$.subscribe(() => {
-      this.colorIndex++;
+    notes.fakeNotes$.subscribe(note => {
+      this.balls.push(note);
     });
   }
 
-  get color() {
-    return this.colors[this.colorIndex % this.colors.length];
+  removeBall(ball) {
+    this.balls = this.balls.filter(b => b !== ball);
   }
 
   ngOnInit() {
