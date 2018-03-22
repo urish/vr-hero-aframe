@@ -1,8 +1,10 @@
 <a-scene>
   <a-sky color="skyblue"></a-sky>
 
-  <a-sphere *ngFor="let user of users" [attr.position]="{x: user.x, y: 1.5, z: user.z}|aframe" [attr.fireball]="{color:user.color}|aframe">
-  </a-sphere>
+  <a-entity *ngFor="let user of users" [attr.position]="{x: user.x, y: 1.5, z: user.z}|aframe">
+    <a-cone radius-bottom="0.5" radius-top="0.1" height="1" [attr.fireball]="{color:user.color}|aframe"></a-cone>
+    <a-sphere radius="0.25" [attr.fireball]="{color:user.color}|aframe" position="0 0.7 0"></a-sphere>
+  </a-entity>
 
   <a-entity rotation="45 0 0" position="0 0 -10">
     <a-entity *ngFor="let ball of balls" animation="property: position; from: 0 0 0; to: 0 10 0; dur: 5000">
