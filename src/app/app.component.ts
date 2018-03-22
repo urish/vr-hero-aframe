@@ -1,5 +1,5 @@
+import { UserPresenceService, IUser } from './user-presence.service';
 import { Component, OnInit } from '@angular/core';
-import { FirebaseNotesService, INoteEvent } from './firebase-notes.service';
 
 @Component({
   selector: 'app-root',
@@ -8,17 +8,12 @@ import { FirebaseNotesService, INoteEvent } from './firebase-notes.service';
 })
 export class AppComponent implements OnInit {
 
-  colors = ['red', 'pink', 'orange', 'green', 'blue', 'purple'];
-  colorIndex = 0;
+  users: IUser[];
 
-  constructor(private notes: FirebaseNotesService) {
-    notes.fakeNotes$.subscribe(() => {
-      this.colorIndex++;
+  constructor(private userPresence: UserPresenceService) {
+    userPresence.users$.subscribe((users) => {
+      this.users = Object.values(users);
     });
-  }
-
-  get color() {
-    return this.colors[this.colorIndex % this.colors.length];
   }
 
   ngOnInit() {
