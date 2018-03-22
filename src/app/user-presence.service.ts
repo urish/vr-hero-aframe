@@ -21,11 +21,14 @@ export class UserPresenceService {
   constructor(firebaseUtils: FirebaseUtilsService) {
     this.users$ = firebaseUtils.observe<{ [key: string]: IUser }>(this.usersRef);
 
+    const randRadius = 3 + Math.random() * 5;
+    const randAngle = Math.random() * Math.PI * 2;
+
     this.usersRef
       .push({
         color: colors[Math.floor(Math.random() * colors.length)],
-        x: Math.random() * 5 - 2.5,
-        z: Math.random() * 5 - 2.5,
+        x: Math.sin(randAngle) * randRadius,
+        z: Math.cos(randAngle) * randRadius,
       })
       .onDisconnect()
       .remove();
