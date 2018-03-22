@@ -8,15 +8,10 @@ import { AframePipe } from './aframe.pipe';
 import { UserPresenceService } from './user-presence.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AframePipe
-  ],
-  imports: [
-    BrowserModule
-  ],
+  declarations: [AppComponent, AframePipe],
+  imports: [BrowserModule],
   providers: [FirebaseUtilsService, FirebaseNotesService, UserPresenceService],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}
