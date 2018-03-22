@@ -1,7 +1,7 @@
 import { FirebaseUtilsService } from './firebase-utils.service';
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { firebaseApp, observeRef } from './firebase.config';
+import { firebaseApp } from './firebase.config';
 import { interval } from 'rxjs/observable/interval';
 import { map, publish, switchMap } from 'rxjs/operators';
 
