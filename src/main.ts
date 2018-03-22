@@ -6,7 +6,6 @@ import { environment } from './environments/environment';
 
 import 'aframe-fireball-component';
 import 'aframe-particle-system-component';
-import 'aframe-starnest-component';
 import 'aframe-animation-component';
 
 if (environment.production) {
