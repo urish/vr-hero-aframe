@@ -1,7 +1,7 @@
 <a-scene>
   <a-sky color="skyblue"></a-sky>
 
-  <a-entity *ngFor="let user of users" [attr.position]="{x: user.x, y: 1.5, z: user.z}|aframe">
+  <a-entity *ngFor="let user of users" [attr.position]="{x: user.x, y: 1.5+(user.jump?user.jump/15:0), z: user.z}|aframe">
     <a-cone radius-bottom="0.5" radius-top="0.1" height="1" [attr.fireball]="{color:user.color}|aframe"></a-cone>
     <a-sphere radius="0.25" [attr.fireball]="{color:user.color}|aframe" position="0 0.7 0"></a-sphere>
   </a-entity>

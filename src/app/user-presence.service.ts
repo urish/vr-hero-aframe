@@ -16,6 +16,8 @@ export interface IUser {
 @Injectable()
 export class UserPresenceService {
   private readonly usersRef = firebaseApp.database().ref('/users');
+  private readonly currentUserRef: firebase.database.Reference;
+
   readonly users$: Observable<{ [key: string]: IUser }>;
 
   constructor(firebaseUtils: FirebaseUtilsService) {
@@ -24,13 +26,15 @@ export class UserPresenceService {
     const randRadius = 3 + Math.random() * 5;
     const randAngle = Math.random() * Math.PI * 2;
 
-    this.usersRef
-      .push({
-        color: colors[Math.floor(Math.random() * colors.length)],
-        x: Math.sin(randAngle) * randRadius,
-        z: Math.cos(randAngle) * randRadius,
-      })
-      .onDisconnect()
-      .remove();
+    this.currentUserRef = this.usersRef.push({
+      color: colors[Math.floor(Math.random() * colors.length)],
+      x: Math.sin(randAngle) * randRadius,
+      z: Math.cos(randAngle) * randRadius,
+    });
+    this.currentUserRef.onDisconnect().remove();
+  }
+
+  async setJumping(jumpValue: number) {
+    await this.currentUserRef.update({ jump: jumpValue });
   }
 }

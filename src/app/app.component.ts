@@ -1,3 +1,4 @@
+import { JumpDetectionService } from './jump-detection.service';
 import { Component, OnInit } from '@angular/core';
 import { UserPresenceService, IUser } from './user-presence.service';
 import { FirebaseNotesService, INoteEvent } from './firebase-notes.service';
@@ -19,12 +20,16 @@ export class AppComponent implements OnInit {
     jump: { src: `${cdnUrl}/jump.ogg?1521187674201` },
   };
 
-  constructor(private userPresence: UserPresenceService, private notes: FirebaseNotesService) {
+  constructor(private userPresence: UserPresenceService, private notes: FirebaseNotesService,
+    private jumpDetectionService: JumpDetectionService) {
     userPresence.users$.subscribe((users) => {
       this.users = Object.values(users);
     });
     notes.notes$.subscribe((note) => {
       this.balls.push(note);
+    });
+    jumpDetectionService.jumps$.subscribe((jumpValue) => {
+      userPresence.setJumping(jumpValue);
     });
   }
 

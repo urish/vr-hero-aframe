@@ -1,0 +1,21 @@
+import { Injectable } from '@angular/core';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { merge } from 'rxjs/observable/merge';
+import { timer } from 'rxjs/observable/timer';
+import { filter, map, switchMap } from 'rxjs/operators';
+
+const gravityG = 9.8; /* meters per second^2 */
+const jumpAccelerationTreshold = 2 * gravityG;
+
+@Injectable()
+export class JumpDetectionService {
+  // Emits the approx. jump force whenever a jump is detected, null when the jump is over
+  public jumps$ = fromEvent<DeviceMotionEvent>(window, 'devicemotion', { capture: true }).pipe(
+    map((e) => e.accelerationIncludingGravity),
+    map((accel) => accel && accel.x),
+    filter((val) => val > jumpAccelerationTreshold),
+    switchMap((val) => merge([val], timer(500).pipe(map(() => null as null)))),
+  );
+
+  constructor() {}
+}
