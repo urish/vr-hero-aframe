@@ -1,9 +1,13 @@
-<a-scene>
+<a-scene fog="type: exponential; color: black; density: 0.025">
   <a-sky color="black"></a-sky>
 
   <a-assets>
     <a-asset id="invader-obj" src="assets/invader.obj"></a-asset>
+    <img id="floorTexture" src="assets/floor.gif">
   </a-assets>
+
+  <a-plane material="shader:gif; src:#floorTexture; repeat: 100 100"
+     rotation="-90 0 0" width="300" height="300"></a-plane>
 
   <a-entity *ngFor="let user of users; trackBy: userId" [attr.position]="{x: user.x, y: 1.5+(user.jump?user.jump/15:0), z: user.z}|aframe">
     <a-entity obj-model="obj: #invader-obj" scale="0.01 0.01 0.01" [attr.material]="{color:user.color}|aframe"></a-entity>

@@ -7,6 +7,7 @@ import { environment } from './environments/environment';
 import 'aframe-fireball-component';
 import 'aframe-particle-system-component';
 import 'aframe-animation-component';
+import 'aframe-gif-shader';
 
 if (environment.production) {
   enableProdMode();
