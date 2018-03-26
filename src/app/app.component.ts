@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     jumpDetectionService: JumpDetectionService,
   ) {
     userPresence.users$.subscribe((users) => {
-      this.users = Object.values(users);
+      this.users = users;
     });
     notes.notes$.subscribe((note) => {
       this.balls.push(note);
@@ -41,4 +41,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  userId(user: IUser) {
+    return user.id;
+  }
 }
