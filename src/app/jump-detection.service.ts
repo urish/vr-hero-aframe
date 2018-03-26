@@ -10,12 +10,25 @@ const jumpAccelerationTreshold = 2 * gravityG;
 @Injectable()
 export class JumpDetectionService {
   // Emits the approx. jump force whenever a jump is detected, null when the jump is over
-  public jumps$ = fromEvent<DeviceMotionEvent>(window, 'devicemotion', { capture: true }).pipe(
+  public accelerometerJumps$ = fromEvent<DeviceMotionEvent>(window, 'devicemotion').pipe(
     map((e) => e.accelerationIncludingGravity),
     map((accel) => accel && accel.x),
     filter((val) => val > jumpAccelerationTreshold),
     switchMap((val) => merge([val], timer(500).pipe(map(() => null as null)))),
   );
+
+  // Emits a jump event whenever space is pressed, stops jumping when space is released
+  public keyboardJumps$ = fromEvent<KeyboardEvent>(window, 'keydown').pipe(
+    filter((e) => e.key === ' '),
+    switchMap(() =>
+      merge(
+        [jumpAccelerationTreshold],
+        fromEvent<KeyboardEvent>(window, 'keyup').pipe(filter((e) => e.key === ' '), map(() => null as number)),
+      ),
+    ),
+  );
+
+  public jumps$ = merge(this.accelerometerJumps$, this.keyboardJumps$);
 
   constructor() {}
 }
