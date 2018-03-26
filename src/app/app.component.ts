@@ -20,8 +20,11 @@ export class AppComponent implements OnInit {
     jump: { src: `${cdnUrl}/jump.ogg?1521187674201` },
   };
 
-  constructor(private userPresence: UserPresenceService, private notes: FirebaseNotesService,
-    private jumpDetectionService: JumpDetectionService) {
+  constructor(
+    userPresence: UserPresenceService,
+    notes: FirebaseNotesService,
+    jumpDetectionService: JumpDetectionService,
+  ) {
     userPresence.users$.subscribe((users) => {
       this.users = Object.values(users);
     });
@@ -33,7 +36,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  removeBall(ball) {
+  removeBall(ball: INoteEvent) {
     this.balls = this.balls.filter((b) => b !== ball);
   }
 

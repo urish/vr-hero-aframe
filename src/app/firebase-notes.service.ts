@@ -1,9 +1,9 @@
 import { FirebaseUtilsService } from './firebase-utils.service';
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { firebaseApp } from './firebase.config';
 import { interval } from 'rxjs/observable/interval';
-import { map, publish, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 export interface INoteEvent {
   id: number;
