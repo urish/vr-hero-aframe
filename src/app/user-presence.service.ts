@@ -15,6 +15,7 @@ export interface IUser {
   z: number;
   rotationX?: number;
   rotationY?: number;
+  me?: boolean;
 }
 
 @Injectable()
@@ -31,6 +32,7 @@ export class UserPresenceService {
         Object.keys(userDict).map((id) => ({
           id,
           ...userDict[id],
+          me: id === this.currentUserRef.key,
         })),
       ),
     );
@@ -45,7 +47,9 @@ export class UserPresenceService {
       rotationX: 0,
       rotationY: 0,
     });
-    this.me$ = firebaseUtils.observe<IUser>(this.currentUserRef);
+    this.me$ = firebaseUtils.observe<IUser>(this.currentUserRef).pipe(
+      map((value) => ({...value, me: true})),
+    );
     this.currentUserRef.onDisconnect().remove();
   }
 

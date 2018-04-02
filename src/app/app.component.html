@@ -20,7 +20,7 @@
 
   <a-entity *ngFor="let user of users; trackBy: userId" 
     [attr.position]="{x: user.x, y: 1.5+(user.jump?user.jump/15:0), z: user.z}|aframe">
-    <a-entity obj-model="obj: #invader-obj" [attr.material]="{color:user.color}|aframe"
+    <a-entity *ngIf="!user.me" obj-model="obj: #invader-obj" [attr.material]="{color:user.color}|aframe"
       [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0}|aframe"></a-entity>
   </a-entity>
 
