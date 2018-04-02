@@ -514,13 +514,9 @@ aframe-gif-shader@urish/aframe-gif-shader#0db398dec3fa76aa10b9f8c080c3228bba9b73
   version "0.2.0"
   resolved "https://codeload.github.com/urish/aframe-gif-shader/tar.gz/0db398dec3fa76aa10b9f8c080c3228bba9b7327"
 
-aframe-particle-system-component@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/aframe-particle-system-component/-/aframe-particle-system-component-1.0.11.tgz#ac1f3abef2307b238df58c9358982c987fb10016"
-
-aframe@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/aframe/-/aframe-0.8.1.tgz#4e2ce79bced998ee3638cc634d3dadda6217660b"
+aframe@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/aframe/-/aframe-0.7.1.tgz#f42c520a0d7bbcff75893f2baaca740f716719ac"
   dependencies:
     "@tweenjs/tween.js" "^16.8.0"
     browserify-css "^0.8.2"
@@ -533,9 +529,9 @@ aframe@^0.8.1:
     present "0.0.6"
     promise-polyfill "^3.1.0"
     style-attr "^1.0.2"
-    three "github:dmarcos/three.js#r90fixPose"
+    three "^0.87.0"
     three-bmfont-text "^2.1.0"
-    webvr-polyfill "^0.9.40"
+    webvr-polyfill "^0.9.36"
 
 after@0.8.2:
   version "0.8.2"
@@ -8836,9 +8832,9 @@ three-buffer-vertex-data@^1.0.0:
   dependencies:
     flatten-vertex-data "^1.0.0"
 
-"three@github:dmarcos/three.js#r90fixPose":
-  version "0.90.0"
-  resolved "https://codeload.github.com/dmarcos/three.js/tar.gz/9be3a8056dead5edbdb4ff2b532138ea5e74054e"
+three@^0.87.0:
+  version "0.87.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.87.1.tgz#466a34edc4543459ced9b9d7d276b65216fe2ba8"
 
 through2@0.6.x:
   version "0.6.5"
@@ -9646,7 +9642,7 @@ websocket-extensions@>=0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.2.tgz#0e18781de629a18308ce1481650f67ffa2693a5d"
 
-webvr-polyfill@^0.9.40:
+webvr-polyfill@^0.9.36:
   version "0.9.41"
   resolved "https://registry.yarnpkg.com/webvr-polyfill/-/webvr-polyfill-0.9.41.tgz#dcaaed05ea8e14a44b629679ca32b9a35780e0e3"
 
