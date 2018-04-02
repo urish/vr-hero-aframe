@@ -7,10 +7,9 @@ import { JumpDetectionService } from './jump-detection.service';
 import { FirebaseUtilsService } from './firebase-utils.service';
 import { FirebaseNotesService } from './firebase-notes.service';
 import { UserPresenceService } from './user-presence.service';
-import { RotationListenerDirective } from './rotation-listener.directive';
 
 @NgModule({
-  declarations: [AppComponent, AframePipe, RotationListenerDirective],
+  declarations: [AppComponent, AframePipe],
   imports: [BrowserModule],
   providers: [JumpDetectionService, FirebaseUtilsService, FirebaseNotesService, UserPresenceService],
   bootstrap: [AppComponent],

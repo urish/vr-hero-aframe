@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   };
 
   constructor(
-    userPresence: UserPresenceService,
+    private userPresence: UserPresenceService,
     notes: FirebaseNotesService,
     jumpDetectionService: JumpDetectionService,
   ) {
@@ -48,5 +48,9 @@ export class AppComponent implements OnInit {
 
   userId(user: IUser) {
     return user.id;
+  }
+
+  onRotationChanged(e: AFrame.DetailEvent<AFrame.Coordinate>) {
+    this.userPresence.updateMyRotation(e.detail);
   }
 }

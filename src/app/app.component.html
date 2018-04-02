@@ -8,8 +8,10 @@
 
   <a-sky material="shader: gif; src: #sky-texture; repeat: 5 2.5; fog: false"></a-sky>
   
-  <a-camera [attr.position]="{x: me.x, y: 1.7, z: me.z}|aframe"
-    appRotationListener></a-camera>
+  <a-entity id="#rig" [attr.position]="{x: me.x, y: 0, z: me.z}|aframe">
+    <a-camera position="0 1.6 0" look-controls wasd-controls rotation-listener 
+      (rotationChanged)="onRotationChanged($event)"></a-camera>
+  </a-entity>
 
   <a-sphere position="0 0.5 0" radius="0.5" fireball></a-sphere>
 
