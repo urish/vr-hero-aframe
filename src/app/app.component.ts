@@ -12,6 +12,7 @@ const cdnUrl = 'https://cdn.glitch.com/ed38cda4-8b9e-460f-83fa-3c9f7ed0bf7e';
 })
 export class AppComponent implements OnInit {
   users: IUser[];
+  me: IUser;
 
   balls: INoteEvent[] = [];
 
@@ -25,6 +26,9 @@ export class AppComponent implements OnInit {
     notes: FirebaseNotesService,
     jumpDetectionService: JumpDetectionService,
   ) {
+    userPresence.me$.subscribe((user) => {
+      this.me = user;
+    });
     userPresence.users$.subscribe((users) => {
       this.users = users;
     });

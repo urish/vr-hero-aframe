@@ -13,6 +13,8 @@ export interface IUser {
   color: string;
   x: number;
   z: number;
+  rotationX?: number;
+  rotationY?: number;
 }
 
 @Injectable()
@@ -21,6 +23,7 @@ export class UserPresenceService {
   private readonly currentUserRef: firebase.database.Reference;
 
   readonly users$: Observable<IUser[]>;
+  readonly me$: Observable<IUser>;
 
   constructor(firebaseUtils: FirebaseUtilsService) {
     this.users$ = firebaseUtils.observe<{ [key: string]: IUser }>(this.usersRef).pipe(
@@ -39,11 +42,21 @@ export class UserPresenceService {
       color: colors[Math.floor(Math.random() * colors.length)],
       x: Math.sin(randAngle) * randRadius,
       z: Math.cos(randAngle) * randRadius,
+      rotationX: 0,
+      rotationY: 0,
     });
+    this.me$ = firebaseUtils.observe<IUser>(this.currentUserRef);
     this.currentUserRef.onDisconnect().remove();
   }
 
   async setJumping(jumpValue: number) {
     await this.currentUserRef.update({ jump: jumpValue });
+  }
+
+  async updateMyRotation(newRotation: AFrame.Coordinate) {
+    this.currentUserRef.update({
+      rotationX: newRotation.x,
+      rotationY: newRotation.y,
+    });
   }
 }
