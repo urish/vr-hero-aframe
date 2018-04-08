@@ -1,8 +1,7 @@
 import { FirebaseUtilsService } from './firebase-utils.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, interval } from 'rxjs';
 import { firebaseApp } from './firebase.config';
-import { interval } from 'rxjs/observable/interval';
 import { map, switchMap } from 'rxjs/operators';
 
 export interface INoteEvent {

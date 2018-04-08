@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { merge } from 'rxjs/observable/merge';
-import { timer } from 'rxjs/observable/timer';
+import { fromEvent, merge, timer } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 const gravityG = 9.8; /* meters per second^2 */

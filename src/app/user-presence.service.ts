@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { map } from 'rxjs/operators';
