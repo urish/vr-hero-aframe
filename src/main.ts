@@ -1,3 +1,5 @@
+/// <reference types="aframe" />
+
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -6,7 +8,6 @@ import { environment } from './environments/environment';
 
 import 'aframe-fireball-component';
 import 'aframe-animation-component';
-import 'aframe-gif-shader';
 import './app/aframe/rotation-listener.aframe';
 import './app/aframe/position-listener.aframe';
 

@@ -41,8 +41,6 @@
 import 'core-js/es6/reflect';
 import 'core-js/es7/reflect';
 
-import 'aframe';
-
 /**
  * Required to support Web Animations `@angular/animation`.
  * Needed for: All but Chrome, Firefox and Opera. http://caniuse.com/#feat=web-animation
