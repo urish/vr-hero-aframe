@@ -25,6 +25,8 @@ export class UserPresenceService {
 
   readonly users$: Observable<IUser[]>;
   readonly me$: Observable<IUser>;
+  readonly baseX: number;
+  readonly baseZ: number;
 
   constructor(firebaseUtils: FirebaseUtilsService) {
     this.users$ = firebaseUtils.observe<{ [key: string]: IUser }>(this.usersRef).pipe(
@@ -39,11 +41,13 @@ export class UserPresenceService {
 
     const randRadius = 3 + Math.random() * 5;
     const randAngle = Math.random() * Math.PI * 2;
+    this.baseX  = Math.sin(randAngle) * randRadius;
+    this.baseZ = Math.cos(randAngle) * randRadius;
 
     this.currentUserRef = this.usersRef.push({
       color: colors[Math.floor(Math.random() * colors.length)],
-      x: Math.sin(randAngle) * randRadius,
-      z: Math.cos(randAngle) * randRadius,
+      x: this.baseX,
+      z: this.baseZ,
       rotationX: 0,
       rotationY: 0,
     });
@@ -61,6 +65,13 @@ export class UserPresenceService {
     this.currentUserRef.update({
       rotationX: newRotation.x,
       rotationY: newRotation.y,
+    });
+  }
+
+  async updateMyPosition(newPosition: AFrame.Coordinate) {
+    this.currentUserRef.update({
+      x: this.baseX + newPosition.x,
+      z: this.baseZ + newPosition.z,
     });
   }
 }

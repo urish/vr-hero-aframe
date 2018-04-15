@@ -53,4 +53,8 @@ export class AppComponent implements OnInit {
   onRotationChanged(e: AFrame.DetailEvent<AFrame.Coordinate>) {
     this.userPresence.updateMyRotation(e.detail);
   }
+
+  onPositionChanged(e: AFrame.DetailEvent<AFrame.Coordinate>) {
+    this.userPresence.updateMyPosition(e.detail);
+  }
 }
