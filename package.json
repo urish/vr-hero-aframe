@@ -23,7 +23,6 @@
     "@angular/platform-browser": "^6.0.0-rc.5",
     "@angular/platform-browser-dynamic": "^6.0.0-rc.5",
     "@angular/router": "^6.0.0-rc.5",
-    "aframe": "0.7.1",
     "aframe-animation-component": "^3.2.5",
     "aframe-camera-events": "^1.0.0",
     "aframe-fireball-component": "^1.2.2",
