@@ -9,6 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "convert-models": "node models/convert.js",
     "deploy": "yarn build && firebase deploy"
   },
   "private": true,
