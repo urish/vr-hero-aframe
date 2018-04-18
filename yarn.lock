@@ -611,9 +611,9 @@ an-array@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/an-array/-/an-array-1.0.0.tgz#c125a5bb8257778e35f4b4f6aa9c7d0fa9e42665"
 
-angular-aframe-pipe@^1.0.0-rc.0:
-  version "1.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/angular-aframe-pipe/-/angular-aframe-pipe-1.0.0-rc.0.tgz#91ec40f8ce57ed1c0b2a121c7877aae9cc1c3477"
+angular-aframe-pipe@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/angular-aframe-pipe/-/angular-aframe-pipe-1.0.0.tgz#5439993b79bdd04ead1759566f8ac5c9ed839d17"
   dependencies:
     tslib "^1.9.0"
 
