@@ -27,6 +27,7 @@
     "aframe-animation-component": "^3.2.5",
     "aframe-fireball-component": "^1.2.2",
     "aframe-gif-shader": "urish/aframe-gif-shader#0db398dec3fa76aa10b9f8c080c3228bba9b7327",
+    "angular-aframe-pipe": "^1.0.0-rc.0",
     "core-js": "^2.4.1",
     "firebase": "^4.12.1",
     "rxjs": "^6.0.0-uncanny-rc.7",
