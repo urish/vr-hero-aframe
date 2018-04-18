@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private userPresence: UserPresenceService,
-    private controller: ControllerService,
+    controller: ControllerService,
     jumpDetectionService: JumpDetectionService,
   ) {
     userPresence.me$.subscribe((user) => {
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     userPresence.users$.subscribe((users) => {
       this.users = users;
     });
-    controller.pose$.subscribe(pose => {
+    controller.pose$.subscribe((pose) => {
       this.balls.push(pose);
     });
     jumpDetectionService.jumps$.subscribe((jumpValue) => {

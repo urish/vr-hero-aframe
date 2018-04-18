@@ -1,6 +1,6 @@
 import { FirebaseUtilsService } from './firebase-utils.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { firebaseApp } from './firebase.config';
 
 export interface IControllerEvent {
