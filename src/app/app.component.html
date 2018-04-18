@@ -1,35 +1,25 @@
-<a-scene fog="type: exponential; color: black; density: 0.025">
-
-  <a-assets>
-    <a-asset id="invader-obj" src="assets/invader-2.obj.txt"></a-asset>
-    <img id="floor-texture" src="assets/floor.gif">
-    <img id="sky-texture" src="assets/stars.gif">
-  </a-assets>
-
-  <a-sky material="shader: gif; src: #sky-texture; repeat: 10 5; fog: false"></a-sky>
-
-  <a-entity id="#rig" [attr.position]="{x: me.x, y: 0, z: me.z}|aframe">
-    <a-camera position="0 1.6 0" look-controls wasd-controls
-      rotation-listener (rotationChanged)="onRotationChanged($event)"
-      position-listener (positionChanged)="onPositionChanged($event)">
-    </a-camera>
-  </a-entity>
-
-  <a-box position="0 5 0" radius="0.5" fireball></a-box>
-
-  <a-plane material="shader:gif; src:#floor-texture; repeat: 100 100"
-     rotation="-90 0 0" width="300" height="300"></a-plane>
-
-  <a-entity *ngFor="let user of users; trackBy: userId" 
-    [attr.position]="{x: user.x, y: 1.5+(user.jump?user.jump/15:0), z: user.z}|aframe">
-    <a-entity [attr.visible]="!user.me" obj-model="obj: #invader-obj" [attr.material]="{color:user.color}|aframe"
-      [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0}|aframe"></a-entity>
-  </a-entity>
-
-  <a-sphere position="0 5 0" *ngFor="let ball of balls" 
-    animation__scale="property: scale; from: 0.5 0.5 0.5; to: 10 10 10; dur: 4000"
-    animation__opacity="property: fireball.opacity; from: 1; to: 0; dur: 4000"
-    [attr.sound]="{ src: sounds.throw.src, autoplay: true } | aframe"
-    (animationcomplete)="removeBall(ball)">
-  </a-sphere>
-</a-scene>
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+</div>
+<h2>Here are some links to help you start: </h2>
+<ul>
+  <li>
+    <h2>
+      <a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a>
+    </h2>
+  </li>
+  <li>
+    <h2>
+      <a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a>
+    </h2>
+  </li>
+  <li>
+    <h2>
+      <a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a>
+    </h2>
+  </li>
+</ul>
