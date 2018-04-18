@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('vr-hero-moon App', () => {
+describe('vr-hero-aframe App', () => {
   let page: AppPage;
 
   beforeEach(() => {
