@@ -1,5 +1,5 @@
 import { FirebaseUtilsService } from './firebase-utils.service';
-import { FirebaseNotesService } from './firebase-notes.service';
+import { ControllerService } from './controller.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -15,7 +15,7 @@ import { UserPresenceService } from './user-presence.service';
   imports: [
     BrowserModule
   ],
-  providers: [FirebaseUtilsService, FirebaseNotesService, UserPresenceService],
+  providers: [FirebaseUtilsService, ControllerService, UserPresenceService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
