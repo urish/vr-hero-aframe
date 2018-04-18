@@ -1,7 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import * as firebase from 'firebase/app';
-import { Observable } from 'rxjs/Observable';
-import { Subscriber } from 'rxjs/Subscriber';
+import { Observable, Subscriber } from 'rxjs';
 import { publish, refCount } from 'rxjs/operators';
 
 @Injectable()

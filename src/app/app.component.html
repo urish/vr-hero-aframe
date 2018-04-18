@@ -1,19 +1,35 @@
-<a-scene>
-  <a-sky starnest></a-sky>
+<a-scene fog="type: exponential; color: black; density: 0.025">
 
-  <a-sphere *ngFor="let user of users" [attr.position]="{x: user.x, y: 1.5, z: user.z}|aframe" [attr.fireball]="{color:user.color}|aframe">
-  </a-sphere>
+  <a-assets>
+    <a-asset id="invader-obj" src="assets/invader-2.obj"></a-asset>
+    <img id="floor-texture" src="assets/floor.gif">
+    <img id="sky-texture" src="assets/stars.gif">
+  </a-assets>
 
-  <a-entity rotation="45 0 0" position="0 0 -10">
-    <a-entity *ngFor="let ball of balls" animation="property: position; from: 0 0 0; to: 0 10 0; dur: 5000">
-      <a-sphere [attr.position]="{x: ball.stringId * 2 - 6, y: 1.5, z: -ball.fret}|aframe"
-        [attr.sound]="{ src: sounds.throw.src, autoplay: true } | aframe"
-        animation__opacity="property: fireball.opacity; from: 1; to: 0; dur: 5000"
-        animation__scale="property: fireball.scale; from: 0.5; to: 1.5; dur: 1600; dir: alternate; loop:true"
-        animation__brightness="property: fireball.brightness; from: 1.5; to: 5.0; dur: 3200; dir: alternate; loop:true"
-        (animationcomplete)="removeBall(ball)">
-      </a-sphere>
-    </a-entity>
+  <a-sky material="shader: gif; src: #sky-texture; repeat: 10 5; fog: false"></a-sky>
+
+  <a-entity id="#rig" [attr.position]="{x: me.x, y: 0, z: me.z}|aframe">
+    <a-camera position="0 1.6 0" look-controls wasd-controls
+      rotation-listener (rotationChanged)="onRotationChanged($event)"
+      position-listener (positionChanged)="onPositionChanged($event)">
+    </a-camera>
   </a-entity>
 
+  <a-box position="0 5 0" radius="0.5" fireball></a-box>
+
+  <a-plane material="shader:gif; src:#floor-texture; repeat: 100 100"
+     rotation="-90 0 0" width="300" height="300"></a-plane>
+
+  <a-entity *ngFor="let user of users; trackBy: userId" 
+    [attr.position]="{x: user.x, y: 1.5+(user.jump?user.jump/15:0), z: user.z}|aframe">
+    <a-entity [attr.visible]="!user.me" obj-model="obj: #invader-obj" [attr.material]="{color:user.color}|aframe"
+      [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0}|aframe"></a-entity>
+  </a-entity>
+
+  <a-sphere position="0 5 0" *ngFor="let ball of balls" 
+    animation__scale="property: scale; from: 0.5 0.5 0.5; to: 10 10 10; dur: 4000"
+    animation__opacity="property: fireball.opacity; from: 1; to: 0; dur: 4000"
+    [attr.sound]="{ src: sounds.throw.src, autoplay: true } | aframe"
+    (animationcomplete)="removeBall(ball)">
+  </a-sphere>
 </a-scene>
