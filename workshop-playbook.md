@@ -164,10 +164,9 @@ We will attach this service to our component. Modify your `app.component.ts` to 
 
 ```typescript
 export class AppComponent {
-  users$: Observable<IUser[]>;
+  users$ = this.userPresence.users$;
 
-  constructor(userPresence: UserPresenceService) {
-    this.users$ = userPresence.users$;
+  constructor(private userPresence: UserPresenceService) {
   }
 
   userId(user: IUser) {
