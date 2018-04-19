@@ -6,7 +6,8 @@ import { map } from 'rxjs/operators';
 import { FirebaseUtilsService } from './firebase-utils.service';
 import { firebaseApp } from './firebase.config';
 
-const colors = ['red', 'pink', 'orange', 'green', 'blue', 'purple'];
+const randomColor = () =>
+  '#' + Math.round((0x1000000 + 0xffffff * Math.random())).toString(16).slice(1);
 
 export interface IUser {
   id: string;
@@ -45,7 +46,7 @@ export class UserPresenceService {
     this.baseZ = Math.cos(randAngle) * randRadius;
 
     this.currentUserRef = this.usersRef.push({
-      color: colors[Math.floor(Math.random() * colors.length)],
+      color: randomColor(),
       x: this.baseX,
       z: this.baseZ,
       rotationX: 0,
