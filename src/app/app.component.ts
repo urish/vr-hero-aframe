@@ -12,7 +12,7 @@ const cdnUrl = 'https://cdn.glitch.com/ed38cda4-8b9e-460f-83fa-3c9f7ed0bf7e';
 })
 export class AppComponent implements OnInit {
   users$ = this.userPresence.users$;
-  me$ = this.userPresence.me$;
+  me: IUser;
   color$ = this.controller.color$;
 
   balls: IControllerEvent[] = [];
@@ -27,6 +27,9 @@ export class AppComponent implements OnInit {
     private controller: ControllerService,
     jumpDetectionService: JumpDetectionService,
   ) {
+    userPresence.me$.subscribe((value) => {
+      this.me = value;
+    });
     controller.pulse$.subscribe((pulse) => {
       this.balls.push(pulse);
     });
