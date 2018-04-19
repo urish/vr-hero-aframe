@@ -153,7 +153,7 @@ export interface IUser {
 }
 ```
 
-New users are created with a random position and color. Don't worry about the other fields (rotation, id and me) - we will get to them later.
+New users are created with a unique id, a random position and color. Don't worry about the other fields (rotation / me) - we will get to them later.
 
 Finally, the UserPresence service has a `users$` property which emits an array of logged-in users whenever there is an update to the user list.
 
@@ -166,19 +166,25 @@ export class AppComponent {
   constructor(userPresence: UserPresenceService) {
     this.users$ = userPresence.users$;
   }
+
+  userId(user: IUser) {
+      return user.id;
+  }
 }
 ```
 
 Now, that we have this observable on our component, we can use that to visualize the users in our scene. We'll modify the `<a-sphere>` element in our `app.component.ts` to repeat for each of the users:
 
 ```html
-  <a-sphere *ngFor="let user of users$ | async" 
+  <a-sphere *ngFor="let user of users$ | async; trackBy: userId" 
     [attr.position]="{x: user.x, y: 1.5, z: user.z} | aframe" 
     [attr.color]="user.color">
   </a-sphere>
 ```
 
-We use the `async` pipe as `users$` is an observable. Then, we bind the `position` attribute to an object containing the user position (specifically their x / z coordinates). We need to pass this object through the [aframe pipe](https://www.npmjs.com/package/angular-aframe-pipe), as a workaround for [an issue with Angular + A-Frame integration](https://github.com/angular/angular/issues/20452). 
+We use the `async` pipe as `users$` is an observable. `trackBy` will be used to avoid re-creating the spheres whenever the user list change - otherwise, we will get an annoying flicker as the spheres are recreated.
+
+Then, we bind the `position` attribute to an object containing the user position (specifically their x / z coordinates). We need to pass this object through the [aframe pipe](https://www.npmjs.com/package/angular-aframe-pipe), as a workaround for [an issue with Angular + A-Frame integration](https://github.com/angular/angular/issues/20452). 
 
 Similarly, we bind the `color` attribute to the user's color property. Here we don't need the `aframe` pipe as the color is a simple string and not an object.
 
@@ -232,4 +238,26 @@ Next, update the `<a-sky>` element to use this texture and repeat it:
 ```html
   <a-sky material="shader: gif; src: #sky-texture; repeat: 10 5"></a-sky>
 ```
+
+## We are Invaders!
+
+It's time to upgrade our simple spheres to actual Invaders!
+
+We will start by loading the Invader 3D Model file. Add the following line to you `a-assets` section:
+
+```html
+    <a-asset id="invader-obj" src="assets/invader-2.obj"></a-asset>
+```
+
+And then replace the `<a-sphere>` element with `<a-obj-model>` referencing the asset we just added:
+
+```html
+  <a-obj-model src="#invader-obj" 
+    *ngFor="let user of users$ | async; trackBy: userId" 
+    [attr.position]="{x: user.x, y: 1.5, z: user.z} | aframe"
+    [attr.color]="user.color">
+  </a-obj-model>
+```
+
+It's basically the same thing as we had for the sphere above, only this time we are using `<a-obj-model src="invader-obj" ...>` in place of `<a-sphere ...>`.
 
