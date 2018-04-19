@@ -336,3 +336,51 @@ Then, we can wrap the camera with another object, that will set its position bas
     </a-camera>
   </a-entity>
 ```
+
+## Jump jump jump!
+
+To make our experience even more fun, we will make our users jump and use the accelerometer to detect these jumps. Start by creating a jump-detection service:
+
+```
+ng generate service jump-detection
+```
+
+then paste [this code](src/app/jump-detection.service.ts) following code into `jump-detection.service.ts`. This service exports an observable called `jumps$` which merges events from both the accelerometer (on mobile phone) and the keyboard (pressing the space key on a computer).
+
+The `jump$` event will emit a value representing the jump strength whenever the user is jumping, then `null` when the jump event is over (either 500 milliseconds after the accelerometer value crossed the defined threshold, or whenever the space key was released).
+
+We will subscribe to this observable in our AppComponent's constructor:
+
+```typescript
+  constructor(
+    private userPresence: UserPresenceService,
+    jumpDetectionService: JumpDetectionService,
+  ) {
+    ...
+    jumpDetectionService.jumps$.subscribe((jumpValue) => {
+      userPresence.setJumping(jumpValue);
+    });
+  }
+```
+
+This code basically updates our user object with Firebase, indicating whether we are jumping.
+
+Two final touches would be updating our camera so our viewpoint changes whenever we jump, and also let other users see us jumping. Change the camera rig (the `e-entity` wrapping that wraps the `a-camera`) as follows:
+
+```html
+  <a-entity id="#rig" [attr.position]="{x: me.x, y: me.jump ? 3 : 1.5, z: me.z} | aframe">
+```
+
+and finally, change the `a-obj-model` that draws the player avatars to account for the jump parameter (note the change in the y value of `[attr.position]):
+
+```html
+  <a-obj-model src="#invader-obj" 
+    *ngFor="let user of users$ | async; trackBy: userId" 
+    [attr.visible]="!user.me"
+    [attr.position]="{x: user.x, y: user.jump ? 3 : 1.5, z: user.z}|aframe" 
+    [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0}|aframe"
+    [attr.color]="user.color">
+  </a-obj-model>
+```
+
+That's all folks! Enjoy your new game :)
