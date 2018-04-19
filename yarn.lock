@@ -510,6 +510,10 @@ aframe-animation-component@^3.2.5:
   dependencies:
     animejs "^1.1.0"
 
+aframe-camera-events@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/aframe-camera-events/-/aframe-camera-events-1.0.0.tgz#9b15a201b79fcd056dba757d88ea3230eb58c57a"
+
 aframe-fireball-component@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/aframe-fireball-component/-/aframe-fireball-component-1.2.2.tgz#af519a263fea351cfef5c24ebff54c53218290d4"
