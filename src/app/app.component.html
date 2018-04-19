@@ -15,7 +15,7 @@
     </a-camera>
   </a-entity>
 
-  <a-box position="0 5 0" radius="0.5" [attr.fireball]="{ color: (color$ | async) } | aframe"></a-box>
+  <a-box position="0 5 0" radius="0.5" [attr.fireball]="{ color: (blastColor$ | async) } | aframe"></a-box>
 
   <a-plane material="shader:gif; src:#floor-texture; repeat: 100 100"
      rotation="-90 0 0" width="300" height="300"></a-plane>
@@ -26,11 +26,11 @@
       [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0}|aframe"></a-entity>
   </a-entity>
 
-  <a-sphere position="0 5 0" *ngFor="let ball of balls" 
+  <a-sphere position="0 5 0" *ngFor="let blast of blasts" 
     animation__scale="property: scale; from: 0.5 0.5 0.5; to: 10 10 10; dur: 4000"
     animation__opacity="property: fireball.opacity; from: 1; to: 0; dur: 4000"
-    [attr.fireball]="{ color: (color$ | async) } | aframe"
+    [attr.fireball]="{ color: (blastColor$ | async) } | aframe"
     [attr.sound]="{ src: sounds.throw.src, autoplay: true } | aframe"
-    (animationcomplete)="removeBall(ball)">
+    (animationcomplete)="removeBlast(blast)">
   </a-sphere>
 </a-scene>

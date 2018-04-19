@@ -5,13 +5,13 @@ import { AppComponent } from './app.component';
 import { AframePipeModule } from 'angular-aframe-pipe';
 import { JumpDetectionService } from './jump-detection.service';
 import { FirebaseUtilsService } from './firebase-utils.service';
-import { ControllerService } from './controller.service';
+import { BlastService } from './blast.service';
 import { UserPresenceService } from './user-presence.service';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AframePipeModule],
-  providers: [JumpDetectionService, FirebaseUtilsService, ControllerService, UserPresenceService, AframePipeModule],
+  providers: [JumpDetectionService, FirebaseUtilsService, BlastService, UserPresenceService, AframePipeModule],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
