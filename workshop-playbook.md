@@ -182,3 +182,54 @@ We use the `async` pipe as `users$` is an observable. Then, we bind the `positio
 
 Similarly, we bind the `color` attribute to the user's color property. Here we don't need the `aframe` pipe as the color is a simple string and not an object.
 
+## Adding some visual touches
+
+Let's make our world look more like a video game. We'll start by adding some colorful spikes on the floor, turning it into a dance floor. We'll start by loading a texture to be used for the floor:
+
+```html
+  <a-assets>
+    <img id="floor-texture" src="assets/floor.gif">
+  </a-assets>
+```
+
+We can then use this texture for our `<a-plane>` element:
+
+```html
+  <a-plane material="shader: gif; src: #floor-texture" 
+    position="0 0 -5" rotation="-90 0 0" 
+    width="5" height="5" ></a-plane>
+```
+
+Note the use of the `gif` shader, which adds animated GIF texture support to a-frame (it's a part of the [aframe-gif-component](https://www.npmjs.com/package/aframe-gif-component) package).
+
+Now we will make our floor larger and repeat the texture multiple times:
+
+```html
+  <a-plane material="shader: gif; src: #floor-texture; repeat: 100 100" 
+    position="0 0 -5" rotation="-90 0 0" 
+    width="300" height="300"></a-plane>
+```
+
+At this point, we already got a nearly infinite dance floor, and we can make it better by enabling animation for the texture, using a-frame's GIF shader which supports animated GIF textures:
+
+```html
+  <a-plane material="src: #floor-texture; repeat: 100 100; shader: gif" 
+    position="0 0 -5" rotation="-90 0 0" 
+    width="300" height="300"></a-plane>
+```
+
+Let's add a similar touch for the sky, using an animated star texture and repeating it. First, load the new texture inside the `<a-assets>` element:
+
+```html
+  <a-assets>
+    <img id="sky-texture" src="assets/stars.gif">
+    <img id="floor-texture" src="assets/floor.gif">
+  </a-assets>
+```
+
+Next, update the `<a-sky>` element to use this texture and repeat it:
+
+```html
+  <a-sky material="shader: gif; src: #sky-texture; repeat: 10 5"></a-sky>
+```
+
