@@ -27,8 +27,9 @@
   </a-entity>
 
   <a-sphere position="0 5 0" *ngFor="let blast of blasts" 
-    animation__scale="property: scale; from: 0.5 0.5 0.5; to: 10 10 10; dur: 4000"
-    animation__opacity="property: fireball.opacity; from: 1; to: 0; dur: 4000"
+    scale="0.5 0.5 0.5"
+    animation__scale="property: scale; to: 10 10 10; dur: 1000"
+    animation__opacity="property: fireball.opacity; from: 1; to: 0; dur: 1000"
     [attr.fireball]="{ color: (blastColor$ | async) } | aframe"
     [attr.sound]="{ src: sounds.throw.src, autoplay: true } | aframe"
     (animationcomplete)="removeBlast(blast)">
