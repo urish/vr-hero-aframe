@@ -13,6 +13,7 @@ export interface IUser {
   color: string;
   x: number;
   z: number;
+  jump?: number | null;
   rotationX?: number;
   rotationY?: number;
   me?: boolean;
