@@ -1,7 +1,7 @@
 import { JumpDetectionService } from './jump-detection.service';
 import { Component, OnInit } from '@angular/core';
 import { UserPresenceService, IUser } from './user-presence.service';
-import { BlastService, IBlastEvent } from './blast.service';
+import { BlastService } from './blast.service';
 
 const cdnUrl = 'https://cdn.glitch.com/ed38cda4-8b9e-460f-83fa-3c9f7ed0bf7e';
 
@@ -12,9 +12,11 @@ const cdnUrl = 'https://cdn.glitch.com/ed38cda4-8b9e-460f-83fa-3c9f7ed0bf7e';
 })
 export class AppComponent implements OnInit {
   users$ = this.userPresence.users$;
-  blasts: IBlastEvent[] = [];
-  blastColor$ = this.blastService.color$;
   me: IUser;
+  blasts$ = this.blastService.getBlasts({
+    animationLength: 2000
+  })
+  blastColor$ = this.blastService.getBlastColor();
 
   sounds = {
     throw: { src: `${cdnUrl}/sfx_throw.wav?1521187676351` },
@@ -29,16 +31,9 @@ export class AppComponent implements OnInit {
     userPresence.me$.subscribe((value) => {
       this.me = value;
     });
-    blastService.blasts$.subscribe((blast) => {
-      this.blasts.push(blast);
-    });
     jumpDetectionService.jumps$.subscribe((jumpValue) => {
       userPresence.setJumping(jumpValue);
     });
-  }
-
-  removeBlast(blast: IBlastEvent) {
-    this.blasts = this.blasts.filter((b) => b !== blast);
   }
 
   ngOnInit() {}
