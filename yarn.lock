@@ -518,9 +518,9 @@ aframe-fireball-component@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/aframe-fireball-component/-/aframe-fireball-component-1.2.2.tgz#af519a263fea351cfef5c24ebff54c53218290d4"
 
-aframe-gif-shader@urish/aframe-gif-shader#0db398dec3fa76aa10b9f8c080c3228bba9b7327:
+aframe-gif-shader-pixelated@^0.2.0:
   version "0.2.0"
-  resolved "https://codeload.github.com/urish/aframe-gif-shader/tar.gz/0db398dec3fa76aa10b9f8c080c3228bba9b7327"
+  resolved "https://registry.yarnpkg.com/aframe-gif-shader-pixelated/-/aframe-gif-shader-pixelated-0.2.0.tgz#dc7b0e21fd76df824771181a51afc4ed238599f4"
 
 aframe@0.7.1:
   version "0.7.1"

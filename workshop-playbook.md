@@ -27,7 +27,8 @@ Next, install [aframe](https://aframe.io/), the set of components we will use, a
 
     cd vr-hero-aframe
     yarn add aframe aframe-fireball-component
-    yarn add aframe-animation-component
+    yarn add aframe-animation-component aframe-camera-events
+    yarn add aframe-gif-shader-pixelated
     yarn add angular-aframe-pipe
 
 Finally, install Firebase (we'll need it later):
@@ -75,6 +76,8 @@ Import all the A-Frame components we have installed by adding the following line
 ```typescript
 import 'aframe-fireball-component';
 import 'aframe-animation-component';
+import 'aframe-gif-shader-pixelated';
+import 'aframe-camera-events';
 ```
 
 ## Create your first A-Frame scene
