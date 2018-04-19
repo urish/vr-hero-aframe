@@ -27,7 +27,8 @@ Next, install [aframe](https://aframe.io/), the set of components we will use, a
 
     cd vr-hero-aframe
     yarn add aframe aframe-fireball-component
-    yarn add aframe-animation-component
+    yarn add aframe-animation-component aframe-camera-events
+    yarn add aframe-gif-shader-pixelated
     yarn add angular-aframe-pipe
 
 Finally, install Firebase (we'll need it later):
@@ -75,6 +76,8 @@ Import all the A-Frame components we have installed by adding the following line
 ```typescript
 import 'aframe-fireball-component';
 import 'aframe-animation-component';
+import 'aframe-gif-shader-pixelated';
+import 'aframe-camera-events';
 ```
 
 ## Create your first A-Frame scene
@@ -153,7 +156,7 @@ export interface IUser {
 }
 ```
 
-New users are created with a random position and color. Don't worry about the other fields (rotation, id and me) - we will get to them later.
+New users are created with a unique id, a random position and color. Don't worry about the other fields (rotation / me) - we will get to them later.
 
 Finally, the UserPresence service has a `users$` property which emits an array of logged-in users whenever there is an update to the user list.
 
@@ -161,10 +164,13 @@ We will attach this service to our component. Modify your `app.component.ts` to 
 
 ```typescript
 export class AppComponent {
-  users$: Observable<IUser[]>;
+  users$ = this.userPresence.users$;
 
-  constructor(userPresence: UserPresenceService) {
-    this.users$ = userPresence.users$;
+  constructor(private userPresence: UserPresenceService) {
+  }
+
+  userId(user: IUser) {
+      return user.id;
   }
 }
 ```
@@ -172,13 +178,15 @@ export class AppComponent {
 Now, that we have this observable on our component, we can use that to visualize the users in our scene. We'll modify the `<a-sphere>` element in our `app.component.ts` to repeat for each of the users:
 
 ```html
-  <a-sphere *ngFor="let user of users$ | async" 
+  <a-sphere *ngFor="let user of users$ | async; trackBy: userId" 
     [attr.position]="{x: user.x, y: 1.5, z: user.z} | aframe" 
     [attr.color]="user.color">
   </a-sphere>
 ```
 
-We use the `async` pipe as `users$` is an observable. Then, we bind the `position` attribute to an object containing the user position (specifically their x / z coordinates). We need to pass this object through the [aframe pipe](https://www.npmjs.com/package/angular-aframe-pipe), as a workaround for [an issue with Angular + A-Frame integration](https://github.com/angular/angular/issues/20452). 
+We use the `async` pipe as `users$` is an observable. `trackBy` will be used to avoid re-creating the spheres whenever the user list change - otherwise, we will get an annoying flicker as the spheres are recreated.
+
+Then, we bind the `position` attribute to an object containing the user position (specifically their x / z coordinates). We need to pass this object through the [aframe pipe](https://www.npmjs.com/package/angular-aframe-pipe), as a workaround for [an issue with Angular + A-Frame integration](https://github.com/angular/angular/issues/20452). 
 
 Similarly, we bind the `color` attribute to the user's color property. Here we don't need the `aframe` pipe as the color is a simple string and not an object.
 
@@ -233,3 +241,146 @@ Next, update the `<a-sky>` element to use this texture and repeat it:
   <a-sky material="shader: gif; src: #sky-texture; repeat: 10 5"></a-sky>
 ```
 
+## We are Invaders!
+
+It's time to upgrade our simple spheres to actual Invaders!
+
+We will start by loading the Invader 3D Model file. Add the following line to you `a-assets` section:
+
+```html
+    <a-asset id="invader-obj" src="assets/invader-2.obj"></a-asset>
+```
+
+And then replace the `<a-sphere>` element with `<a-obj-model>` referencing the asset we just added:
+
+```html
+  <a-obj-model src="#invader-obj" 
+    *ngFor="let user of users$ | async; trackBy: userId" 
+    [attr.position]="{x: user.x, y: 1.5, z: user.z} | aframe"
+    [attr.color]="user.color">
+  </a-obj-model>
+```
+
+It's basically the same thing as we had for the sphere above, only this time we are using `<a-obj-model src="invader-obj" ...>` in place of `<a-sphere ...>`.
+
+## Setting up the camera
+
+We want our invaders to follow the real players as they orient in our virtual world. In order to do so, we will take control of the a-frame camera. Add the following elements to your scene:
+
+```html
+  <a-camera position="0 1.6 0" look-controls wasd-controls>
+  </a-camera>
+```
+
+The `look-controls` and `wasd-controls` attributes tell a-frame that we want to let the user control the camera by rotating their smartphones or using the keyboard on a computer.
+
+Next, we will setup the event handlers for the camera:
+
+```html
+  <a-camera position="0 1.6 0" look-controls wasd-controls
+    rotation-listener (rotationChanged)="onRotationChanged($event.detail)"
+    position-listener (positionChanged)="onPositionChanged($event.detail)">
+  </a-camera>
+```
+
+The `rotation-listener` and `position-listener` attributes poll the camera for changes in the respective attributes. They are provided by the [aframe-camera-events](https://www.npmjs.com/package/aframe-camera-events) package, and they fire the `rotationChanged` and `positionChanged` events on the camera component. Since `a-frame` elements are actually Web Components, we can use the angular syntax to listen for these events.
+
+We also need to implement the event handlers in our AppController:
+
+```typescript
+  onRotationChanged(value: AFrame.Coordinate) {
+    this.userPresence.updateMyRotation(value);
+  }
+
+  onPositionChanged(value: AFrame.Coordinate) {
+    this.userPresence.updateMyPosition(value);
+  }
+```
+
+These event listeners simply call the respective methods on our `userPresence` service, which in turn saves the new values to Firebase.
+
+Let's update our invader objects to rotate following their respective users:
+
+```html
+  <a-obj-model src="#invader-obj" 
+    *ngFor="let user of users$ | async; trackBy: userId" 
+    [attr.visible]="!user.me"
+    [attr.position]="{x: user.x, y: 1.5, z: user.z} | aframe"
+    [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0} | aframe"
+    [attr.color]="user.color">
+  </a-obj-model>
+```
+
+Also note how we set the `visible` attribute to `!user.me`, which will hide our own user for the display. This will be useful for the next step, where we will be changing you perspective to the random location chosen for your user by moving the camera there.
+
+We will start by updating the constructor to include a `me` property with the current user's details:
+
+```typescript
+export class AppComponent implements OnInit {
+  users$ = this.userPresence.users$;
+  me: IUser;
+  constructor(private userPresence: UserPresenceService) {
+    userPresence.me$.subscribe((value) => {
+      this.me = value;
+    });
+  }
+```
+
+Then, we can wrap the camera with another object, that will set its position based on our user's position:
+
+```html
+  <a-entity id="#rig" [attr.position]="{x: me.x, y: 0, z: me.z} | aframe">
+    <a-camera position="0 1.6 0" look-controls wasd-controls
+      rotation-listener (rotationChanged)="onRotationChanged($event.detail)"
+      position-listener (positionChanged)="onPositionChanged($event.detail)">
+    </a-camera>
+  </a-entity>
+```
+
+## Jump jump jump!
+
+To make our experience even more fun, we will make our users jump and use the accelerometer to detect these jumps. Start by creating a jump-detection service:
+
+```
+ng generate service jump-detection
+```
+
+then paste [this code](src/app/jump-detection.service.ts) following code into `jump-detection.service.ts`. This service exports an observable called `jumps$` which merges events from both the accelerometer (on mobile phone) and the keyboard (pressing the space key on a computer).
+
+The `jump$` event will emit a value representing the jump strength whenever the user is jumping, then `null` when the jump event is over (either 500 milliseconds after the accelerometer value crossed the defined threshold, or whenever the space key was released).
+
+We will subscribe to this observable in our AppComponent's constructor:
+
+```typescript
+  constructor(
+    private userPresence: UserPresenceService,
+    jumpDetectionService: JumpDetectionService,
+  ) {
+    ...
+    jumpDetectionService.jumps$.subscribe((jumpValue) => {
+      userPresence.setJumping(jumpValue);
+    });
+  }
+```
+
+This code basically updates our user object with Firebase, indicating whether we are jumping.
+
+Two final touches would be updating our camera so our viewpoint changes whenever we jump, and also let other users see us jumping. Change the camera rig (the `e-entity` wrapping that wraps the `a-camera`) as follows:
+
+```html
+  <a-entity id="#rig" [attr.position]="{x: me.x, y: me.jump ? 3 : 1.5, z: me.z} | aframe">
+```
+
+and finally, change the `a-obj-model` that draws the player avatars to account for the jump parameter (note the change in the y value of `[attr.position]):
+
+```html
+  <a-obj-model src="#invader-obj" 
+    *ngFor="let user of users$ | async; trackBy: userId" 
+    [attr.visible]="!user.me"
+    [attr.position]="{x: user.x, y: user.jump ? 3 : 1.5, z: user.z}|aframe" 
+    [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0}|aframe"
+    [attr.color]="user.color">
+  </a-obj-model>
+```
+
+That's all folks! Enjoy your new game :)

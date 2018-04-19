@@ -8,10 +8,10 @@
 
   <a-sky material="shader: gif; src: #sky-texture; repeat: 10 5; fog: false"></a-sky>
 
-  <a-entity id="#rig" [attr.position]="{x: me.x, y: 0, z: me.z}|aframe">
+  <a-entity id="#rig" [attr.position]="{x: me.x, y: me.jump ? 3 : 1.5, z: me.z} | aframe">
     <a-camera position="0 1.6 0" look-controls wasd-controls
-      rotation-listener (rotationChanged)="onRotationChanged($event)"
-      position-listener (positionChanged)="onPositionChanged($event)">
+      rotation-listener (rotationChanged)="onRotationChanged($event.detail)"
+      position-listener (positionChanged)="onPositionChanged($event.detail)">
     </a-camera>
   </a-entity>
 
@@ -20,11 +20,13 @@
   <a-plane material="shader:gif; src:#floor-texture; repeat: 100 100"
      rotation="-90 0 0" width="300" height="300"></a-plane>
 
-  <a-entity *ngFor="let user of users; trackBy: userId" 
-    [attr.position]="{x: user.x, y: 1.5+(user.jump?user.jump/15:0), z: user.z}|aframe">
-    <a-entity [attr.visible]="!user.me" obj-model="obj: #invader-obj" [attr.material]="{color:user.color}|aframe"
-      [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0}|aframe"></a-entity>
-  </a-entity>
+  <a-obj-model src="#invader-obj" 
+    *ngFor="let user of users$ | async; trackBy: userId" 
+    [attr.visible]="!user.me"
+    [attr.position]="{x: user.x, y: user.jump ? 3 : 1.5, z: user.z}|aframe" 
+    [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0}|aframe"
+    [attr.color]="user.color">
+  </a-obj-model>
 
   <a-sphere position="0 5 0" *ngFor="let blast of (blasts$ | async)" 
     scale="0.5 0.5 0.5"

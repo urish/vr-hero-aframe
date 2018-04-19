@@ -11,7 +11,7 @@ const cdnUrl = 'https://cdn.glitch.com/ed38cda4-8b9e-460f-83fa-3c9f7ed0bf7e';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  users: IUser[];
+  users$ = this.userPresence.users$;
   me: IUser;
   blasts$ = this.blastService.getBlasts({
     animationLength: 2000
@@ -28,11 +28,8 @@ export class AppComponent implements OnInit {
     private blastService: BlastService,
     jumpDetectionService: JumpDetectionService,
   ) {
-    userPresence.me$.subscribe((user) => {
-      this.me = user;
-    });
-    userPresence.users$.subscribe((users) => {
-      this.users = users;
+    userPresence.me$.subscribe((value) => {
+      this.me = value;
     });
     jumpDetectionService.jumps$.subscribe((jumpValue) => {
       userPresence.setJumping(jumpValue);
@@ -45,11 +42,11 @@ export class AppComponent implements OnInit {
     return user.id;
   }
 
-  onRotationChanged(e: AFrame.DetailEvent<AFrame.Coordinate>) {
-    this.userPresence.updateMyRotation(e.detail);
+  onRotationChanged(value: AFrame.Coordinate) {
+    this.userPresence.updateMyRotation(value);
   }
 
-  onPositionChanged(e: AFrame.DetailEvent<AFrame.Coordinate>) {
-    this.userPresence.updateMyPosition(e.detail);
+  onPositionChanged(value: AFrame.Coordinate) {
+    this.userPresence.updateMyPosition(value);
   }
 }
