@@ -1,7 +1,7 @@
 import { JumpDetectionService } from './jump-detection.service';
 import { Component, OnInit } from '@angular/core';
 import { UserPresenceService, IUser } from './user-presence.service';
-import { ControllerService, IControllerEvent } from './controller.service';
+import { BlastService, IBlastEvent } from './blast.service';
 
 const cdnUrl = 'https://cdn.glitch.com/ed38cda4-8b9e-460f-83fa-3c9f7ed0bf7e';
 
@@ -13,9 +13,8 @@ const cdnUrl = 'https://cdn.glitch.com/ed38cda4-8b9e-460f-83fa-3c9f7ed0bf7e';
 export class AppComponent implements OnInit {
   users$ = this.userPresence.users$;
   me: IUser;
-  color$ = this.controller.color$;
-
-  balls: IControllerEvent[] = [];
+  blasts: IBlastEvent[] = [];
+  blastColor$ = this.blastService.color$;
 
   sounds = {
     throw: { src: `${cdnUrl}/sfx_throw.wav?1521187676351` },
@@ -24,22 +23,22 @@ export class AppComponent implements OnInit {
 
   constructor(
     private userPresence: UserPresenceService,
-    private controller: ControllerService,
+    private blastService: BlastService,
     jumpDetectionService: JumpDetectionService,
   ) {
     userPresence.me$.subscribe((value) => {
       this.me = value;
     });
-    controller.pulse$.subscribe((pulse) => {
-      this.balls.push(pulse);
+    blastService.blasts$.subscribe((blast) => {
+      this.blasts.push(blast);
     });
     jumpDetectionService.jumps$.subscribe((jumpValue) => {
       userPresence.setJumping(jumpValue);
     });
   }
 
-  removeBall(ball: IControllerEvent) {
-    this.balls = this.balls.filter((b) => b !== ball);
+  removeBlast(blast: IBlastEvent) {
+    this.blasts = this.blasts.filter((b) => b !== blast);
   }
 
   ngOnInit() {}

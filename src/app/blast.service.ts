@@ -4,26 +4,26 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { firebaseApp } from './firebase.config';
 
-export interface IControllerEvent {
+export interface IBlastEvent {
   type: string;
   payload?: any;
 }
 
 @Injectable()
-export class ControllerService {
-  readonly actions$: Observable<IControllerEvent>;
-  readonly pulse$: Observable<IControllerEvent>;
+export class BlastService {
+  readonly actions$: Observable<IBlastEvent>;
+  readonly blasts$: Observable<IBlastEvent>;
   readonly color$: Observable<string>;
 
   constructor(firebaseUtils: FirebaseUtilsService) {
     const actionRef = firebaseApp.database().ref('/action');
-    this.actions$ = firebaseUtils.observe<IControllerEvent>(actionRef, 'child_added');
+    this.actions$ = firebaseUtils.observe<IBlastEvent>(actionRef, 'child_added');
     this.color$ = this.actions$.pipe(
       filter(({ type }) => type === 'color'),
       map(action => action.payload)
     );
-    this.pulse$ = this.actions$.pipe(
-      filter(({ type }) => type === 'pulse'),
+    this.blasts$ = this.actions$.pipe(
+      filter(({ type }) => type === 'blast'),
     );
   }
 }
