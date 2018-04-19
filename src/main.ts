@@ -8,8 +8,8 @@ import { environment } from './environments/environment';
 
 import 'aframe-fireball-component';
 import 'aframe-animation-component';
-import './app/aframe/rotation-listener.aframe';
-import './app/aframe/position-listener.aframe';
+import 'aframe-gif-shader-pixelated';
+import 'aframe-camera-events';
 
 if (environment.production) {
   enableProdMode();
