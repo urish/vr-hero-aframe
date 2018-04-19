@@ -263,3 +263,76 @@ And then replace the `<a-sphere>` element with `<a-obj-model>` referencing the a
 
 It's basically the same thing as we had for the sphere above, only this time we are using `<a-obj-model src="invader-obj" ...>` in place of `<a-sphere ...>`.
 
+## Setting up the camera
+
+We want our invaders to follow the real players as they orient in our virtual world. In order to do so, we will take control of the a-frame camera. Add the following elements to your scene:
+
+```html
+  <a-camera position="0 1.6 0" look-controls wasd-controls>
+  </a-camera>
+```
+
+The `look-controls` and `wasd-controls` attributes tell a-frame that we want to let the user control the camera by rotating their smartphones or using the keyboard on a computer.
+
+Next, we will setup the event handlers for the camera:
+
+```html
+  <a-camera position="0 1.6 0" look-controls wasd-controls
+    rotation-listener (rotationChanged)="onRotationChanged($event.detail)"
+    position-listener (positionChanged)="onPositionChanged($event.detail)">
+  </a-camera>
+```
+
+The `rotation-listener` and `position-listener` attributes poll the camera for changes in the respective attributes. They are provided by the [aframe-camera-events](https://www.npmjs.com/package/aframe-camera-events) package, and they fire the `rotationChanged` and `positionChanged` events on the camera component. Since `a-frame` elements are actually Web Components, we can use the angular syntax to listen for these events.
+
+We also need to implement the event handlers in our AppController:
+
+```typescript
+  onRotationChanged(value: AFrame.Coordinate) {
+    this.userPresence.updateMyRotation(value);
+  }
+
+  onPositionChanged(value: AFrame.Coordinate) {
+    this.userPresence.updateMyPosition(value);
+  }
+```
+
+These event listeners simply call the respective methods on our `userPresence` service, which in turn saves the new values to Firebase.
+
+Let's update our invader objects to rotate following their respective users:
+
+```html
+  <a-obj-model src="#invader-obj" 
+    *ngFor="let user of users$ | async; trackBy: userId" 
+    [attr.visible]="!user.me"
+    [attr.position]="{x: user.x, y: 1.5, z: user.z} | aframe"
+    [attr.rotation]="{x: user.rotationX, y: user.rotationY, z: 0} | aframe"
+    [attr.color]="user.color">
+  </a-obj-model>
+```
+
+Also note how we set the `visible` attribute to `!user.me`, which will hide our own user for the display. This will be useful for the next step, where we will be changing you perspective to the random location chosen for your user by moving the camera there.
+
+We will start by updating the constructor to include a `me` property with the current user's details:
+
+```typescript
+export class AppComponent implements OnInit {
+  users$ = this.userPresence.users$;
+  me: IUser;
+  constructor(private userPresence: UserPresenceService) {
+    userPresence.me$.subscribe((value) => {
+      this.me = value;
+    });
+  }
+```
+
+Then, we can wrap the camera with another object, that will set its position based on our user's position:
+
+```html
+  <a-entity id="#rig" [attr.position]="{x: me.x, y: 0, z: me.z} | aframe">
+    <a-camera position="0 1.6 0" look-controls wasd-controls
+      rotation-listener (rotationChanged)="onRotationChanged($event.detail)"
+      position-listener (positionChanged)="onPositionChanged($event.detail)">
+    </a-camera>
+  </a-entity>
+```

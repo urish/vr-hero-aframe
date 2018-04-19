@@ -12,9 +12,9 @@ const cdnUrl = 'https://cdn.glitch.com/ed38cda4-8b9e-460f-83fa-3c9f7ed0bf7e';
 })
 export class AppComponent implements OnInit {
   users$ = this.userPresence.users$;
-  me: IUser;
   blasts: IBlastEvent[] = [];
   blastColor$ = this.blastService.color$;
+  me: IUser;
 
   sounds = {
     throw: { src: `${cdnUrl}/sfx_throw.wav?1521187676351` },
@@ -47,11 +47,11 @@ export class AppComponent implements OnInit {
     return user.id;
   }
 
-  onRotationChanged(e: AFrame.DetailEvent<AFrame.Coordinate>) {
-    this.userPresence.updateMyRotation(e.detail);
+  onRotationChanged(value: AFrame.Coordinate) {
+    this.userPresence.updateMyRotation(value);
   }
 
-  onPositionChanged(e: AFrame.DetailEvent<AFrame.Coordinate>) {
-    this.userPresence.updateMyPosition(e.detail);
+  onPositionChanged(value: AFrame.Coordinate) {
+    this.userPresence.updateMyPosition(value);
   }
 }
