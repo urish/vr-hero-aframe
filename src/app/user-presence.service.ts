@@ -7,7 +7,10 @@ import { FirebaseUtilsService } from './firebase-utils.service';
 import { firebaseApp } from './firebase.config';
 
 const randomColor = () =>
-  '#' + Math.round((0x1000000 + 0xffffff * Math.random())).toString(16).slice(1);
+  '#' +
+  Math.round(0x1000000 + 0xffffff * Math.random())
+    .toString(16)
+    .slice(1);
 
 export interface IUser {
   id: string;
@@ -45,7 +48,7 @@ export class UserPresenceService {
 
     const randRadius = 3 + Math.random() * 5;
     const randAngle = Math.random() * Math.PI * 2;
-    this.baseX  = Math.sin(randAngle) * randRadius;
+    this.baseX = Math.sin(randAngle) * randRadius;
     this.baseZ = Math.cos(randAngle) * randRadius;
 
     this.currentUserRef = this.usersRef.push({
@@ -55,9 +58,7 @@ export class UserPresenceService {
       rotationX: 0,
       rotationY: 0,
     });
-    this.me$ = firebaseUtils.observe<IUser>(this.currentUserRef).pipe(
-      map((value) => ({...value, me: true})),
-    );
+    this.me$ = firebaseUtils.observe<IUser>(this.currentUserRef).pipe(map((value) => ({ ...value, me: true })));
     this.currentUserRef.onDisconnect().remove();
   }
 

@@ -14,8 +14,8 @@ export class AppComponent implements OnInit {
   users$ = this.userPresence.users$;
   me: IUser;
   blasts$ = this.blastService.getBlasts({
-    animationLength: 2000
-  })
+    animationLength: 2000,
+  });
   blastColor$ = this.blastService.getBlastColor();
 
   sounds = {

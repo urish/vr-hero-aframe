@@ -25,20 +25,14 @@ export class BlastService {
   }
 
   getBlastColor() {
-    return this.actions$.pipe(
-      filter(({ type }) => type === 'color'),
-      map((action) => action.payload),
-      shareReplay(1),
-    );
+    return this.actions$.pipe(filter(({ type }) => type === 'color'), map((action) => action.payload), shareReplay(1));
   }
 
   getBlasts({ animationLength = 2000 } = {}) {
     return this.actions$.pipe(
       filter(({ type }) => type === 'blast'),
       windowTime(animationLength),
-      flatMap(blast => blast.pipe(
-        toArray())
-      )
+      flatMap((blast) => blast.pipe(toArray())),
     );
   }
 }
