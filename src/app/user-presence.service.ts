@@ -33,11 +33,13 @@ export class UserPresenceService {
   constructor(firebaseUtils: FirebaseUtilsService) {
     this.users$ = firebaseUtils.observe<{ [key: string]: IUser }>(this.usersRef).pipe(
       map((userDict) =>
-        Object.keys(userDict).map((id) => ({
-          id,
-          ...userDict[id],
-          me: id === this.currentUserRef.key,
-        })),
+        Object.keys(userDict)
+          .map((id) => ({
+            id,
+            ...userDict[id],
+            me: id === this.currentUserRef.key,
+          }))
+          .filter((user) => user.color),
       ),
     );
 
